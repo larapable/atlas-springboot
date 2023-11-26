@@ -6,4 +6,5 @@ import com.example.BarangayConnect.Entity.LoginSignupEntity;
 
 public interface LoginSignupRepository extends JpaRepository<LoginSignupEntity, Integer>{
     LoginSignupEntity findByUsernameAndPassword(String username, String password);
+    LoginSignupEntity findByUsername(String username);
 }

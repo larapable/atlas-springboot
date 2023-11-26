@@ -1,5 +1,6 @@
 package com.example.BarangayConnect.Entity;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -11,7 +12,8 @@ import javax.persistence.Table;
 public class LoginSignupEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
+    @Column(name = "userId")
+    private int userId;
     private String username;
     private String password;
     private String email;
@@ -20,15 +22,17 @@ public class LoginSignupEntity {
     private String address;
     private String dateOfBirth;
     private String gender;
+    @Column(name = "isVerified", columnDefinition = "BOOLEAN")
     private boolean isVerified;
- 
+
     public LoginSignupEntity() {
         super();
     }
 
-    public LoginSignupEntity(int id, String username, String password, String email, String fname, String lname, String address, String dateOfBirth, String gender, boolean isVerified) {
+    public LoginSignupEntity(int userId, String username, String password, String email, String fname, String lname,
+            String address, String dateOfBirth, String gender, boolean isVerified) {
         super();
-        this.id = id;
+        this.userId = userId;
         this.username = username;
         this.password = password;
         this.email = email;
@@ -41,8 +45,8 @@ public class LoginSignupEntity {
     }
 
     // Setters
-    public void setId(int id) {
-        this.id = id;
+    public void setId(int userId) {
+        this.userId = userId;
     }
 
     public void setUsername(String username) {
@@ -83,7 +87,7 @@ public class LoginSignupEntity {
 
     // Getters
     public int getId() {
-        return id;
+        return userId;
     }
 
     public String getUsername() {
@@ -126,4 +130,3 @@ public class LoginSignupEntity {
         return isVerified;
     }
 }
-    

@@ -14,13 +14,13 @@ import javax.persistence.Table;
 public class ProfileEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
+    private int pid;
     private String mobileNumber;
     private String maritalStatus;
     private String citizenship;
     private String religion;
     @OneToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "accountId", referencedColumnName = "id")
+    @JoinColumn(name = "accountUsername", referencedColumnName = "username")
     private LoginSignupEntity loginSignupEntity;
 
     public ProfileEntity() {
@@ -28,10 +28,10 @@ public class ProfileEntity {
     }
 
     // Constructor with variables
-    public ProfileEntity(int id, String mobileNumber, String maritalStatus, String citizenship, String religion,
+    public ProfileEntity(int pid, String mobileNumber, String maritalStatus, String citizenship, String religion,
             LoginSignupEntity loginSignupEntity) {
         super();
-        this.id = id;
+        this.pid = pid;
         this.mobileNumber = mobileNumber;
         this.maritalStatus = maritalStatus;
         this.citizenship = citizenship;
@@ -41,11 +41,11 @@ public class ProfileEntity {
 
     // Getters and Setters
     public int getId() {
-        return id;
+        return pid;
     }
 
-    public void setId(int id) {
-        this.id = id;
+    public void setId(int pid) {
+        this.pid = pid;
     }
 
     public String getMobileNumber() {

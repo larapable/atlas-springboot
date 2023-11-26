@@ -37,17 +37,27 @@ public class LoginSignupController {
     public List<LoginSignupEntity> getAllInfo() {
         return lsservice.getAllInfo();
     }
+    // Read by id
+    @GetMapping("getInfoById/{userId}")
+    public Optional<LoginSignupEntity> getInfoById(@PathVariable int userId) {
+        return lsservice.getInfoById(userId);
+    }
+    // Read by username
+    @GetMapping("getInfoByUsername/{username}")
+    public LoginSignupEntity getInfoByUsername(@PathVariable String username) {
+        return lsservice.getInfoByUsername(username);
+    }
 
     // Update
     @PutMapping("updateInfo")
-    public LoginSignupEntity updateInfo(@RequestParam int id, @RequestBody LoginSignupEntity newLSDetails) {
-        return lsservice.updateInfo(id, newLSDetails);
+    public LoginSignupEntity updateInfo(@RequestParam int userId, @RequestBody LoginSignupEntity newLSDetails) {
+        return lsservice.updateInfo(userId, newLSDetails);
     }
 
     // Delete
-    @DeleteMapping("deleteInfo/{id}")
-    public String deleteInfo(@PathVariable int id) {
-        return lsservice.deleteInfo(id);
+    @DeleteMapping("deleteInfo/{userId}")
+    public String deleteInfo(@PathVariable int userId) {
+        return lsservice.deleteInfo(userId);
     }
 
     @PostMapping("/login")
@@ -64,4 +74,5 @@ public class LoginSignupController {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Invalid username or password");
         }
     }
+
 }

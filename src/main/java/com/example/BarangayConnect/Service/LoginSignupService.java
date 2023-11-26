@@ -16,6 +16,9 @@ public class LoginSignupService {
 
     // Create
     public LoginSignupEntity insertInfo(LoginSignupEntity lsentity) {
+        if (lsrepo.findByUsername(lsentity.getUsername()) != null) {
+            throw new IllegalArgumentException("Username already exists. Please choose a different username.");
+        }
         return lsrepo.save(lsentity);
     }
 
@@ -24,14 +27,24 @@ public class LoginSignupService {
         return lsrepo.findAll();
     }
 
+    // Read by id
+    public Optional<LoginSignupEntity> getInfoById(int userId) {
+        return lsrepo.findById(userId);
+    }
+
+    // Read by username
+    public LoginSignupEntity getInfoByUsername(String username) {
+        return lsrepo.findByUsername(username);
+    }
+
     // Update
     @SuppressWarnings("finally")
-    public LoginSignupEntity updateInfo(int id, LoginSignupEntity newLSDetails) {
+    public LoginSignupEntity updateInfo(int userId, LoginSignupEntity newLSDetails) {
         LoginSignupEntity accInfo = new LoginSignupEntity();
 
         try {
             // search the id number of user/admin that will be updated
-            accInfo = lsrepo.findById(id).get();
+            accInfo = lsrepo.findById(userId).get();
 
             accInfo.setUsername(newLSDetails.getUsername());
             accInfo.setPassword(newLSDetails.getPassword());
@@ -43,20 +56,20 @@ public class LoginSignupService {
             accInfo.setGender(newLSDetails.getGender());
             lsrepo.save(accInfo);
         } catch (NoSuchElementException e) {
-            throw new NoSuchElementException("User " + id + " does not exist!");
+            throw new NoSuchElementException("User " + userId + " does not exist!");
         } finally {
             return lsrepo.save(accInfo);
         }
     }
 
     // Delete
-    public String deleteInfo(int id) {
+    public String deleteInfo(int userId) {
         String msg = "";
-        if (lsrepo.findById(id) != null) {
-            lsrepo.deleteById(id);
-            msg = "User " + id + " has been deleted!";
+        if (lsrepo.findById(userId) != null) {
+            lsrepo.deleteById(userId);
+            msg = "User " + userId + " has been deleted!";
         } else {
-            msg = "User " + id + " does not exist!";
+            msg = "User " + userId + " does not exist!";
         }
         return msg;
     }

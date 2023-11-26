@@ -32,20 +32,19 @@ public class ProfileController {
 
     // Read
     @GetMapping("getAllProfile")
-    public ResponseEntity<List<ProfileEntity>> getAllProfile() {
-        List<ProfileEntity> allProfiles = pservice.getAllProfile();
-        return new ResponseEntity<>(allProfiles, HttpStatus.OK);
+    public List<ProfileEntity> getAllProfileInfo(){
+        return pservice.getAllProfileInfo();
     }
 
     // Update
     @PutMapping("updateProfile")
-    public ProfileEntity updateProfile(@RequestParam int id, @RequestBody ProfileEntity newProfileDetails) {
-        return pservice.updateProfile(id, newProfileDetails);
+    public ProfileEntity updateProfile(@RequestParam int pid, @RequestBody ProfileEntity newProfileDetails) {
+        return pservice.updateProfile(pid, newProfileDetails);
     }
 
     // Delete
     @DeleteMapping("deleteProfile/{id}")
-    public String deleteProfile(@PathVariable int id) {
-        return pservice.deleteProfile(id);
+    public String deleteProfile(@PathVariable int pid) {
+        return pservice.deleteProfile(pid);
     }
 }
