@@ -22,15 +22,22 @@ public class LoginSignupEntity {
     private String address;
     private String dateOfBirth;
     private String gender;
+    private String mobileNumber;
+    private String maritalStatus;
+    private String citizenship;
+    private String religion;
     @Column(name = "isVerified", columnDefinition = "BOOLEAN")
     private boolean isVerified;
+    @Column(name = "isDeleted", columnDefinition = "BOOLEAN")
+    private boolean isDeleted;
 
     public LoginSignupEntity() {
         super();
     }
 
     public LoginSignupEntity(int userId, String username, String password, String email, String fname, String lname,
-            String address, String dateOfBirth, String gender, boolean isVerified) {
+            String address, String dateOfBirth, String gender, String mobileNumber, String maritalStatus,
+            String citizenship, String religion, boolean isVerified, boolean isDeleted) {
         super();
         this.userId = userId;
         this.username = username;
@@ -41,7 +48,12 @@ public class LoginSignupEntity {
         this.address = address;
         this.dateOfBirth = dateOfBirth;
         this.gender = gender;
+        this.mobileNumber = mobileNumber;
+        this.maritalStatus = maritalStatus;
+        this.citizenship = citizenship;
+        this.religion = religion;
         this.isVerified = isVerified;
+        this.isDeleted = isDeleted;
     }
 
     // Setters
@@ -81,8 +93,28 @@ public class LoginSignupEntity {
         this.gender = gender;
     }
 
+    public void setMobileNumber(String mobileNumber) {
+        this.mobileNumber = mobileNumber;
+    }
+
+    public void setMaritalStatus(String maritalStatus) {
+        this.maritalStatus = maritalStatus;
+    }
+
+    public void setCitizenship(String citizenship) {
+        this.citizenship = citizenship;
+    }
+
+    public void setReligion(String religion) {
+        this.religion = religion;
+    }
+
     public void setIsVerified(boolean isVerified) {
         this.isVerified = isVerified;
+    }
+
+    public void setIsDeleted(boolean isDeleted) {
+        this.isDeleted = isDeleted;
     }
 
     // Getters
@@ -122,11 +154,32 @@ public class LoginSignupEntity {
         return gender;
     }
 
+    public String getMobileNumber() {
+        return mobileNumber;
+    }
+
+    public String getMaritalStatus() {
+        return maritalStatus;
+    }
+
+    public String getCitizenship() {
+        return citizenship;
+    }
+
+    public String getReligion() {
+        return religion;
+    }
+
     public boolean getIsVerified() {
         return isVerified;
+    }
+
+    public boolean getIsDeleted() {
+        return isDeleted;
     }
 
     public boolean isVerified() {
         return isVerified;
     }
+
 }

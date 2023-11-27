@@ -54,9 +54,42 @@ public class LoginSignupService {
             accInfo.setAddress(newLSDetails.getAddress());
             accInfo.setDateOfBirth(newLSDetails.getDateOfBirth());
             accInfo.setGender(newLSDetails.getGender());
+            accInfo.setMobileNumber(newLSDetails.getMobileNumber());
+            accInfo.setMaritalStatus(newLSDetails.getMaritalStatus());
+            accInfo.setCitizenship(newLSDetails.getCitizenship());
+            accInfo.setReligion(newLSDetails.getReligion());
             lsrepo.save(accInfo);
         } catch (NoSuchElementException e) {
             throw new NoSuchElementException("User " + userId + " does not exist!");
+        } finally {
+            return lsrepo.save(accInfo);
+        }
+    }
+
+    @SuppressWarnings("finally")
+    // Update by username
+    public LoginSignupEntity updateInfoByUsername(String username, LoginSignupEntity newLSDetails) {
+        LoginSignupEntity accInfo = new LoginSignupEntity();
+
+        try {
+            // search the username of user/admin that will be updated
+            accInfo = lsrepo.findByUsername(username);
+
+            //accInfo.setUsername(newLSDetails.getUsername());
+            //accInfo.setPassword(newLSDetails.getPassword());
+            //accInfo.setEmail(newLSDetails.getEmail());
+            //accInfo.setFname(newLSDetails.getFname());
+            //accInfo.setLname(newLSDetails.getLname());
+            //accInfo.setAddress(newLSDetails.getAddress());
+            //accInfo.setDateOfBirth(newLSDetails.getDateOfBirth());
+            //accInfo.setGender(newLSDetails.getGender());
+            accInfo.setMobileNumber(newLSDetails.getMobileNumber());
+            accInfo.setMaritalStatus(newLSDetails.getMaritalStatus());
+            accInfo.setCitizenship(newLSDetails.getCitizenship());
+            accInfo.setReligion(newLSDetails.getReligion());
+            lsrepo.save(accInfo);
+        } catch (NoSuchElementException e) {
+            throw new NoSuchElementException("User " + username + " does not exist!");
         } finally {
             return lsrepo.save(accInfo);
         }

@@ -37,11 +37,13 @@ public class LoginSignupController {
     public List<LoginSignupEntity> getAllInfo() {
         return lsservice.getAllInfo();
     }
+
     // Read by id
     @GetMapping("getInfoById/{userId}")
     public Optional<LoginSignupEntity> getInfoById(@PathVariable int userId) {
         return lsservice.getInfoById(userId);
     }
+
     // Read by username
     @GetMapping("getInfoByUsername/{username}")
     public LoginSignupEntity getInfoByUsername(@PathVariable String username) {
@@ -52,6 +54,17 @@ public class LoginSignupController {
     @PutMapping("updateInfo")
     public LoginSignupEntity updateInfo(@RequestParam int userId, @RequestBody LoginSignupEntity newLSDetails) {
         return lsservice.updateInfo(userId, newLSDetails);
+    }
+    // Update by username 
+    @PutMapping("/updateUserInfo/{username}")
+    public ResponseEntity<String> updateUserInfo(@PathVariable String username,
+            @RequestBody LoginSignupEntity newUserInfo) {
+        try {
+            lsservice.updateInfoByUsername(username, newUserInfo);
+            return ResponseEntity.ok("User info updated successfully");
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
+        }
     }
 
     // Delete
