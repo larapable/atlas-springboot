@@ -1,9 +1,13 @@
 package com.example.BarangayConnect.Service;
 
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.*;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.example.BarangayConnect.Entity.LoginSignupEntity;
 import com.example.BarangayConnect.Repository.LoginSignupRepository;
@@ -58,6 +62,7 @@ public class LoginSignupService {
             accInfo.setMaritalStatus(newLSDetails.getMaritalStatus());
             accInfo.setCitizenship(newLSDetails.getCitizenship());
             accInfo.setReligion(newLSDetails.getReligion());
+            accInfo.setImage(newLSDetails.getImage());
             lsrepo.save(accInfo);
         } catch (NoSuchElementException e) {
             throw new NoSuchElementException("User " + userId + " does not exist!");
@@ -66,8 +71,8 @@ public class LoginSignupService {
         }
     }
 
-    @SuppressWarnings("finally")
     // Update by username
+    @SuppressWarnings("finally")
     public LoginSignupEntity updateInfoByUsername(String username, LoginSignupEntity newLSDetails) {
         LoginSignupEntity accInfo = new LoginSignupEntity();
 
@@ -75,14 +80,6 @@ public class LoginSignupService {
             // search the username of user/admin that will be updated
             accInfo = lsrepo.findByUsername(username);
 
-            //accInfo.setUsername(newLSDetails.getUsername());
-            //accInfo.setPassword(newLSDetails.getPassword());
-            //accInfo.setEmail(newLSDetails.getEmail());
-            //accInfo.setFname(newLSDetails.getFname());
-            //accInfo.setLname(newLSDetails.getLname());
-            //accInfo.setAddress(newLSDetails.getAddress());
-            //accInfo.setDateOfBirth(newLSDetails.getDateOfBirth());
-            //accInfo.setGender(newLSDetails.getGender());
             accInfo.setMobileNumber(newLSDetails.getMobileNumber());
             accInfo.setMaritalStatus(newLSDetails.getMaritalStatus());
             accInfo.setCitizenship(newLSDetails.getCitizenship());
@@ -92,6 +89,18 @@ public class LoginSignupService {
             throw new NoSuchElementException("User " + username + " does not exist!");
         } finally {
             return lsrepo.save(accInfo);
+        }
+    }
+
+    // Update by username image only
+    public void uploadImage(String username, MultipartFile image) {
+        try {
+            LoginSignupEntity currentUser = lsrepo.findByUsername(username);
+            currentUser.setImage(image.getBytes());
+            lsrepo.save(currentUser);
+            System.out.print("Successfully Uploaded a Picture");
+        } catch (Exception e) {
+            System.out.print(e);
         }
     }
 

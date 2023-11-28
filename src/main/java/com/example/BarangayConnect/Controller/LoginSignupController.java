@@ -1,5 +1,6 @@
 package com.example.BarangayConnect.Controller;
 
+import java.io.IOException;
 import java.util.*;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,13 +16,14 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.example.BarangayConnect.Entity.LoginSignupEntity;
 import com.example.BarangayConnect.Service.LoginSignupService;
 
+@CrossOrigin(origins = "http://localhost:3000")
 @RestController
 @RequestMapping("/login-signup")
-@CrossOrigin(origins = "http://localhost:3000")
 public class LoginSignupController {
     @Autowired
     LoginSignupService lsservice;
@@ -55,7 +57,8 @@ public class LoginSignupController {
     public LoginSignupEntity updateInfo(@RequestParam int userId, @RequestBody LoginSignupEntity newLSDetails) {
         return lsservice.updateInfo(userId, newLSDetails);
     }
-    // Update by username 
+
+    // Update by username
     @PutMapping("/updateUserInfo/{username}")
     public ResponseEntity<String> updateUserInfo(@PathVariable String username,
             @RequestBody LoginSignupEntity newUserInfo) {
@@ -65,6 +68,11 @@ public class LoginSignupController {
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
         }
+    }
+
+    @PutMapping("/uploadImage/{username}")
+    public void uploadImage(@RequestParam("username") String username, @RequestParam("file") MultipartFile image) {
+        lsservice.uploadImage(username, image);
     }
 
     // Delete

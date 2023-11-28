@@ -5,6 +5,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.Lob;
 import javax.persistence.Table;
 
 @Entity
@@ -30,14 +31,17 @@ public class LoginSignupEntity {
     private boolean isVerified;
     @Column(name = "isDeleted", columnDefinition = "BOOLEAN")
     private boolean isDeleted;
-
+    @Lob
+    @Column(name = "userImage", columnDefinition = "LONGBLOB")
+    private byte[] userImage;
+    
     public LoginSignupEntity() {
         super();
     }
 
     public LoginSignupEntity(int userId, String username, String password, String email, String fname, String lname,
             String address, String dateOfBirth, String gender, String mobileNumber, String maritalStatus,
-            String citizenship, String religion, boolean isVerified, boolean isDeleted) {
+            String citizenship, String religion, boolean isVerified, boolean isDeleted, byte[] userImage) {
         super();
         this.userId = userId;
         this.username = username;
@@ -52,6 +56,7 @@ public class LoginSignupEntity {
         this.maritalStatus = maritalStatus;
         this.citizenship = citizenship;
         this.religion = religion;
+        this.userImage = userImage;
         this.isVerified = isVerified;
         this.isDeleted = isDeleted;
     }
@@ -117,6 +122,10 @@ public class LoginSignupEntity {
         this.isDeleted = isDeleted;
     }
 
+    public void setImage(byte[] userImage) {
+        this.userImage = userImage;
+    }
+
     // Getters
     public int getId() {
         return userId;
@@ -172,6 +181,10 @@ public class LoginSignupEntity {
 
     public boolean getIsVerified() {
         return isVerified;
+    }
+
+    public byte[] getImage() {
+        return this.userImage;
     }
 
     public boolean getIsDeleted() {
