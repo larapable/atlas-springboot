@@ -10,7 +10,7 @@ import javax.persistence.Table;
 
 @Entity
 @Table(name = "tblaccount")
-public class LoginSignupEntity {
+public class UserEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "userId")
@@ -31,17 +31,16 @@ public class LoginSignupEntity {
     private boolean isVerified;
     @Column(name = "isDeleted", columnDefinition = "BOOLEAN")
     private boolean isDeleted;
-    @Lob
-    @Column(name = "userImage", columnDefinition = "LONGBLOB")
-    private byte[] userImage;
-    
-    public LoginSignupEntity() {
+    @Column(name = "photo_path")
+    private String photoPath;
+
+    public UserEntity() {
         super();
     }
 
-    public LoginSignupEntity(int userId, String username, String password, String email, String fname, String lname,
+    public UserEntity(int userId, String username, String password, String email, String fname, String lname,
             String address, String dateOfBirth, String gender, String mobileNumber, String maritalStatus,
-            String citizenship, String religion, boolean isVerified, boolean isDeleted, byte[] userImage) {
+            String citizenship, String religion, boolean isVerified, boolean isDeleted,String photoPath) {
         super();
         this.userId = userId;
         this.username = username;
@@ -56,7 +55,7 @@ public class LoginSignupEntity {
         this.maritalStatus = maritalStatus;
         this.citizenship = citizenship;
         this.religion = religion;
-        this.userImage = userImage;
+        this.photoPath = photoPath;
         this.isVerified = isVerified;
         this.isDeleted = isDeleted;
     }
@@ -122,8 +121,8 @@ public class LoginSignupEntity {
         this.isDeleted = isDeleted;
     }
 
-    public void setImage(byte[] userImage) {
-        this.userImage = userImage;
+    public void setPhotoPath(String photoPath) {
+        this.photoPath = photoPath;
     }
 
     // Getters
@@ -183,8 +182,8 @@ public class LoginSignupEntity {
         return isVerified;
     }
 
-    public byte[] getImage() {
-        return this.userImage;
+    public String getPhotoPath() {
+        return this.photoPath;
     }
 
     public boolean getIsDeleted() {
@@ -193,6 +192,10 @@ public class LoginSignupEntity {
 
     public boolean isVerified() {
         return isVerified;
+    }
+
+    public UserEntity orElse(Object object) {
+        return null;
     }
 
 }

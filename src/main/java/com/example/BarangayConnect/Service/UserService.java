@@ -1,50 +1,63 @@
 package com.example.BarangayConnect.Service;
 
+import java.io.IOException;
+import java.io.InputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.nio.file.StandardCopyOption;
 import java.util.*;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 
-import com.example.BarangayConnect.Entity.LoginSignupEntity;
-import com.example.BarangayConnect.Repository.LoginSignupRepository;
+import com.example.BarangayConnect.Entity.UserEntity;
+import com.example.BarangayConnect.Repository.UserRepository;
 
 @Service
-public class LoginSignupService {
+public class UserService {
 
     @Autowired
-    LoginSignupRepository lsrepo;
+    UserRepository lsrepo;
 
     // Create
-    public LoginSignupEntity insertInfo(LoginSignupEntity lsentity) {
+    public UserEntity insertInfo(UserEntity lsentity) {
         if (lsrepo.findByUsername(lsentity.getUsername()) != null) {
             throw new IllegalArgumentException("Username already exists. Please choose a different username.");
         }
         return lsrepo.save(lsentity);
     }
 
+    // Add image
+    public UserEntity addInfo(UserEntity userEntity) {
+        UserEntity existingUser = lsrepo.findById(userEntity.getId()).orElse(null);
+        existingUser.setPhotoPath(userEntity.getPhotoPath());
+        return lsrepo.save(existingUser);
+    }
+
     // Read
-    public List<LoginSignupEntity> getAllInfo() {
+    public List<UserEntity> getAllInfo() {
         return lsrepo.findAll();
     }
 
     // Read by id
-    public Optional<LoginSignupEntity> getInfoById(int userId) {
+    public Optional<UserEntity> getInfoById(int userId) {
         return lsrepo.findById(userId);
     }
 
     // Read by username
-    public LoginSignupEntity getInfoByUsername(String username) {
+    public UserEntity getInfoByUsername(String username) {
         return lsrepo.findByUsername(username);
     }
 
     // Update
     @SuppressWarnings("finally")
-    public LoginSignupEntity updateInfo(int userId, LoginSignupEntity newLSDetails) {
-        LoginSignupEntity accInfo = new LoginSignupEntity();
+    public UserEntity updateInfo(int userId, UserEntity newLSDetails) {
+        UserEntity accInfo = new UserEntity();
 
         try {
             // search the id number of user/admin that will be updated
@@ -62,7 +75,7 @@ public class LoginSignupService {
             accInfo.setMaritalStatus(newLSDetails.getMaritalStatus());
             accInfo.setCitizenship(newLSDetails.getCitizenship());
             accInfo.setReligion(newLSDetails.getReligion());
-            accInfo.setImage(newLSDetails.getImage());
+            accInfo.setPhotoPath(newLSDetails.getPhotoPath());
             lsrepo.save(accInfo);
         } catch (NoSuchElementException e) {
             throw new NoSuchElementException("User " + userId + " does not exist!");
@@ -73,8 +86,8 @@ public class LoginSignupService {
 
     // Update by username
     @SuppressWarnings("finally")
-    public LoginSignupEntity updateInfoByUsername(String username, LoginSignupEntity newLSDetails) {
-        LoginSignupEntity accInfo = new LoginSignupEntity();
+    public UserEntity updateInfoByUsername(String username, UserEntity newLSDetails) {
+        UserEntity accInfo = new UserEntity();
 
         try {
             // search the username of user/admin that will be updated
@@ -92,18 +105,6 @@ public class LoginSignupService {
         }
     }
 
-    // Update by username image only
-    public void uploadImage(String username, MultipartFile image) {
-        try {
-            LoginSignupEntity currentUser = lsrepo.findByUsername(username);
-            currentUser.setImage(image.getBytes());
-            lsrepo.save(currentUser);
-            System.out.print("Successfully Uploaded a Picture");
-        } catch (Exception e) {
-            System.out.print(e);
-        }
-    }
-
     // Delete
     public String deleteInfo(int userId) {
         String msg = "";
@@ -117,10 +118,21 @@ public class LoginSignupService {
     }
 
     public boolean authenticateUser(String username, String password) {
-        LoginSignupEntity user = lsrepo.findByUsernameAndPassword(username, password);
+        UserEntity user = lsrepo.findByUsernameAndPassword(username, password);
 
         // Check if the user is not null (found) and is verified
         return user != null && user.isVerified();
     }
 
+    public void uploadImage(MultipartFile file) throws IOException {
+        Path imagesPath = Paths.get("images");
+        if (file.getOriginalFilename() == null) {
+            throw new IOException("Original name is null");
+        }
+        String originalFilename = file.getOriginalFilename();
+        Path filePath = imagesPath.resolve(originalFilename);
+        try (InputStream inputStream = file.getInputStream()) {
+            Files.copy(inputStream, filePath, StandardCopyOption.REPLACE_EXISTING);
+        }
+    }
 }
