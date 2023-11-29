@@ -47,6 +47,7 @@ public class UserController {
         loginSignupEntity.setPhotoPath(image.getOriginalFilename());
         return lsservice.addInfo(loginSignupEntity);
     }
+
     // Get image from tblAccount using username
     @GetMapping("/getUserImage/{username}")
     public ResponseEntity<String> getUserImage(@PathVariable String username) {
@@ -67,7 +68,7 @@ public class UserController {
         }
     }
 
-    // Read
+    // Read all
     @GetMapping("getAllInfo")
     public List<UserEntity> getAllInfo() {
         return lsservice.getAllInfo();
@@ -85,7 +86,7 @@ public class UserController {
         return lsservice.getInfoByUsername(username);
     }
 
-    // Update
+    // Update by id
     @PutMapping("updateInfo")
     public UserEntity updateInfo(@RequestParam int userId, @RequestBody UserEntity newLSDetails) {
         return lsservice.updateInfo(userId, newLSDetails);
@@ -102,12 +103,6 @@ public class UserController {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
         }
     }
-
-    // @PutMapping("/uploadImage/{username}")
-    // public void uploadImage(@RequestParam("username") String username,
-    // @RequestParam("file") MultipartFile image) {
-    // lsservice.uploadImage(username, image);
-    // }
 
     // Delete
     @DeleteMapping("deleteInfo/{userId}")
@@ -131,6 +126,7 @@ public class UserController {
         return ResponseEntity.ok(response);
     }
 
+    // Authentication
     @PostMapping("/login")
     public ResponseEntity<String> authenticateUser(@RequestBody UserEntity request) {
         String username = request.getUsername();
@@ -145,5 +141,11 @@ public class UserController {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Invalid username or password");
         }
     }
+
+    // @PutMapping("/uploadImage/{username}")
+    // public void uploadImage(@RequestParam("username") String username,
+    // @RequestParam("file") MultipartFile image) {
+    // lsservice.uploadImage(username, image);
+    // }
 
 }
