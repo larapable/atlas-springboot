@@ -22,6 +22,11 @@ public class EventService {
         return eventRepository.findAll();
     }
 
+    // Read by id
+    public Optional<EventEntity> getInfoById(int eventId) {
+        return eventRepository.findById(eventId);
+    }
+
     // Update
     @SuppressWarnings("finally")
     public EventEntity updateEvent(int eventId, EventEntity newEventDetails) {
@@ -53,6 +58,10 @@ public class EventService {
             msg = "Event " + eventId + " does not exist!";
         }
         return msg;
+    }
+
+    public List<EventEntity> findById(int eventId) {
+        return null;
     }
 
 }

@@ -11,20 +11,21 @@ import javax.persistence.Table;
 public class EventEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int eventID;
+    private int eventId;
     private String eventTitle;
     private String eventDescription;
     private String eventDate;
     private String eventLocation;
     private String eventTime;
+
     public EventEntity() {
         super();
     }
 
-    public EventEntity(int eventID, String eventTitle, String eventDescription, String eventDate, String eventLocation,
+    public EventEntity(int eventId, String eventTitle, String eventDescription, String eventDate, String eventLocation,
             String eventTime) {
         super();
-        this.eventID = eventID;
+        this.eventId = eventId;
         this.eventTitle = eventTitle;
         this.eventDescription = eventDescription;
         this.eventDate = eventDate;
@@ -33,11 +34,11 @@ public class EventEntity {
     }
 
     public int getEventID() {
-        return eventID;
+        return eventId;
     }
 
-    public void setEventID(int eventID) {
-        this.eventID = eventID;
+    public void setEventID(int eventId) {
+        this.eventId = eventId;
     }
 
     public String getEventTitle() {
