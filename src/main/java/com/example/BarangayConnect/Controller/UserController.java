@@ -128,15 +128,15 @@ public class UserController {
 
     // Authentication
     @PostMapping("/login")
-    public ResponseEntity<String> authenticateUser(@RequestBody UserEntity request) {
+    public ResponseEntity<Object> authenticateUser(@RequestBody UserEntity request) {
         String username = request.getUsername();
         String password = request.getPassword();
 
         // Your authentication logic here
-        boolean isAuthenticated = lsservice.authenticateUser(username, password);
+        UserEntity authUser = lsservice.authenticateUser(username, password);
 
-        if (isAuthenticated) {
-            return ResponseEntity.ok("Login successful");
+        if (authUser.isVerified()) {
+            return ResponseEntity.ok().body(authUser);
         } else {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Invalid username or password");
         }

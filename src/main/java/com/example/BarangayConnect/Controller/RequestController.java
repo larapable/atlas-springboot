@@ -26,6 +26,7 @@ public class RequestController {
 
     @PostMapping("/insertRequest")
     public RequestEntity insertRequest(@RequestBody RequestEntity request) {
+        System.out.println(request.getUser().getId());
         return rserv.insertRequest(request);
     }
 

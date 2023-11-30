@@ -5,6 +5,8 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 @Entity
@@ -13,6 +15,11 @@ public class RequestEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int docid;
+
+    @ManyToOne
+    @JoinColumn(name = "userId")
+    private UserEntity user;
+
     private String lastname;
     private String firstname;
     private String middlename;
@@ -38,7 +45,7 @@ public class RequestEntity {
 
     public RequestEntity(int docid, String lastname, String firstname, String middlename, String suffix,
             String birthdate, int age, String gender, int numcopies, String purok, String purpose, String doctype,
-            String others, String type, String contactnum, String email, String track) {
+            String others, String type, String contactnum, String email, String track, UserEntity user) {
         this.docid = docid;
         this.lastname = lastname;
         this.firstname = firstname;
@@ -56,6 +63,7 @@ public class RequestEntity {
         this.contactnum = contactnum;
         this.email = email;
         this.track = track;
+        this.user = user;
     }
 
 
@@ -227,7 +235,15 @@ public class RequestEntity {
     public void setTrack(String track) {
         this.track = track;
     }
+    
+    
+    public UserEntity getUser() {
+        return user;
+    }
 
+    public void setUser(UserEntity user) {
+        this.user = user;
+    }
     
 
  

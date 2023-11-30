@@ -8,15 +8,22 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.example.BarangayConnect.Entity.RequestEntity;
+import com.example.BarangayConnect.Entity.UserEntity;
 import com.example.BarangayConnect.Repository.RequestRepository;
+import com.example.BarangayConnect.Repository.UserRepository;
 
 @Service
 public class RequestService {
     @Autowired
     RequestRepository rrepo;
+    @Autowired
+    UserRepository urepo;
     
     //Create
-    public RequestEntity insertRequest(RequestEntity request) {
+    
+       public RequestEntity insertRequest(RequestEntity request) {
+        UserEntity user = urepo.findById(request.getUser().getId()).orElseThrow(() -> new NoSuchElementException("User not found"));
+        request.setUser(user);
         return rrepo.save(request);
     }
 
@@ -30,7 +37,7 @@ public class RequestService {
     public RequestEntity updateRequest(int docid, RequestEntity newRequestDetails) {
         RequestEntity request = new RequestEntity();
         try {
-            request = rrepo.findById(docid).get();
+            request = rrepo.findById(docid).orElseThrow(() -> new NoSuchElementException("Request " + docid + " not found"));
             request.setLastname(newRequestDetails.getLastname());
             request.setFirstname(newRequestDetails.getFirstname());
             request.setMiddlename(newRequestDetails.getMiddlename());
@@ -41,14 +48,14 @@ public class RequestService {
             request.setNumcopies(newRequestDetails.getNumcopies());
             request.setPurok(newRequestDetails.getPurok());
             request.setPurpose(newRequestDetails.getPurpose());
-            request.setDoctype(newRequestDetails.getDoctype());;
+            request.setDoctype(newRequestDetails.getDoctype());
             request.setOthers(newRequestDetails.getOthers());
             request.setType(newRequestDetails.getType());
             request.setContactnum(newRequestDetails.getContactnum());
             request.setEmail(newRequestDetails.getEmail());
             request.setTrack(newRequestDetails.getTrack());
-        } catch(NoSuchElementException ex) {
-            throw new NoSuchElementException("Request "+docid+" does not exist!");
+        } catch (NoSuchElementException ex) {
+            throw new NoSuchElementException("Request " + docid + " does not exist!");
         } finally {
             return rrepo.save(request);
         }

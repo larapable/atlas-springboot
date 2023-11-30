@@ -114,11 +114,11 @@ public class UserService {
         return msg;
     }
 
-    public boolean authenticateUser(String username, String password) {
+    public UserEntity authenticateUser(String username, String password) {
         UserEntity user = lsrepo.findByUsernameAndPassword(username, password);
 
         // Check if the user is not null (found) and is verified
-        return user != null && user.isVerified();
+        return user;// != null && user.isVerified();
     }
 
     public void uploadImage(MultipartFile file) throws IOException {
