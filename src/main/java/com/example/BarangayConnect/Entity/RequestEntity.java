@@ -1,6 +1,7 @@
 package com.example.BarangayConnect.Entity;
 
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -36,6 +37,8 @@ public class RequestEntity {
     private String contactnum;
     private String email;
     private String track;
+    @Column(name = "isDeleted", columnDefinition = "BOOLEAN")
+    private boolean isDeleted;
     
 
     
@@ -45,7 +48,7 @@ public class RequestEntity {
 
     public RequestEntity(int docid, String lastname, String firstname, String middlename, String suffix,
             String birthdate, int age, String gender, int numcopies, String purok, String purpose, String doctype,
-            String others, String type, String contactnum, String email, String track, UserEntity user) {
+            String others, String type, String contactnum, String email, String track, UserEntity user,boolean isDeleted) {
         this.docid = docid;
         this.lastname = lastname;
         this.firstname = firstname;
@@ -64,6 +67,7 @@ public class RequestEntity {
         this.email = email;
         this.track = track;
         this.user = user;
+        this.isDeleted = isDeleted;
     }
 
 
@@ -245,6 +249,13 @@ public class RequestEntity {
         this.user = user;
     }
     
+    public void setIsDeleted(boolean isDeleted) {
+        this.isDeleted = isDeleted;
+    }
+
+    public boolean getIsDeleted() {
+        return isDeleted;
+    }
 
  
     

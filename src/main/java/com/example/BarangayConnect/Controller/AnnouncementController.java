@@ -18,7 +18,7 @@ import com.example.BarangayConnect.Entity.AnnouncementEntity;
 import com.example.BarangayConnect.Repository.AnnouncementRepository;
 import com.example.BarangayConnect.Service.AnnouncementService;
 
-@CrossOrigin(origins = "http://localhost:3001")
+@CrossOrigin(origins = "http://localhost:3000")
 @RestController
 @RequestMapping("/announcement")
 public class AnnouncementController {
@@ -45,7 +45,7 @@ public class AnnouncementController {
     }
 
      // Update
-    @PutMapping("updateInfo")
+    @PutMapping("updateInfo/{annId}")
     public AnnouncementEntity updateInfo(@PathVariable int annId, @RequestBody AnnouncementEntity newAnnouncementDetails) {
         return aserv.updateInfo(annId, newAnnouncementDetails);
     }
