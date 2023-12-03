@@ -5,12 +5,14 @@ import java.util.List;
 import java.util.NoSuchElementException;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.crossstore.ChangeSetPersister.NotFoundException;
 import org.springframework.stereotype.Service;
 
 import com.example.BarangayConnect.Entity.RequestEntity;
 import com.example.BarangayConnect.Entity.UserEntity;
 import com.example.BarangayConnect.Repository.RequestRepository;
 import com.example.BarangayConnect.Repository.UserRepository;
+
 
 @Service
 public class RequestService {
@@ -31,6 +33,7 @@ public class RequestService {
     public List<RequestEntity> getAllRequest(){
         return rrepo.findAll();
     }
+
 
     //Update
     @SuppressWarnings("finally")
@@ -60,6 +63,25 @@ public class RequestService {
             return rrepo.save(request);
         }
     }
+
+    public RequestEntity getRequestById(int docid) {
+        return rrepo.findById(docid).orElse(null);
+    }
+    
+
+    public RequestEntity softDeleteRequest(int docid) {
+        // Retrieve the request by docid
+        RequestEntity existingRequest = getRequestById(docid);
+        
+        if (existingRequest != null) {
+            // Set isDeleted to true
+            existingRequest.setIsDeleted(true);
+            // Save the updated request to the database
+        } 
+          return rrepo.save(existingRequest);
+    }
+    
+
 
     //Delete 
     public String deleteRequest(int docid) {
