@@ -60,10 +60,6 @@ public class UserService {
             // search the id number of user/admin that will be updated
             accInfo = userRepo.findById(userId).get();
 
-            accInfo.setMobileNumber(newLSDetails.getMobileNumber());
-            accInfo.setMaritalStatus(newLSDetails.getMaritalStatus());
-            accInfo.setCitizenship(newLSDetails.getCitizenship());
-            accInfo.setReligion(newLSDetails.getReligion());
             accInfo.setIsVerified(newLSDetails.isVerified());
             userRepo.save(accInfo);
         } catch (NoSuchElementException e) {
