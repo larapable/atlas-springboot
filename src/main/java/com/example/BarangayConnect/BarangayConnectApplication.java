@@ -10,5 +10,4 @@ public class BarangayConnectApplication {
 		SpringApplication.run(BarangayConnectApplication.class, args);
 		System.out.print("Successfully run!");
 	}
-
 }

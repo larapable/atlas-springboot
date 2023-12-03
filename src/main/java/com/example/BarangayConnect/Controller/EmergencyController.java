@@ -3,45 +3,36 @@ package com.example.BarangayConnect.Controller;
 import com.example.BarangayConnect.Entity.EmergencyEntity;
 import com.example.BarangayConnect.Service.EmergencyService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-@CrossOrigin(origins = "http://localhost:3000")
 @RestController
-@RequestMapping("/emergencies")
+@RequestMapping("/emergency")
+@CrossOrigin(origins = "http://localhost:3000")
 public class EmergencyController {
 
     @Autowired
-    private EmergencyService emergencyService;
+    EmergencyService emergencyService;
 
-    @GetMapping("/all")
-    public List<EmergencyEntity> getAllEmergencies() {
-        return emergencyService.getAllEmergencies();
+    @PostMapping("/insertEmergency")
+    public EmergencyEntity insertEmergency(@RequestBody EmergencyEntity emergencyEntity) {
+        System.out.println(emergencyEntity.getUser().getId());
+        return emergencyService.insertEmergency(emergencyEntity);
+    }
+    
+    @GetMapping("/getAllEmergency")
+    public List<EmergencyEntity> getAllEmergency() {
+        return emergencyService.getAllEmergency();
     }
 
-    @GetMapping("/{id}")
-    public ResponseEntity<EmergencyEntity> getEmergencyById(@PathVariable Integer id) {
-        EmergencyEntity emergencyEntity = emergencyService.getEmergencyById(id);
-        return ResponseEntity.of(java.util.Optional.ofNullable(emergencyEntity));
+    @PutMapping("/updateEmergency")
+    public EmergencyEntity updateEmergency(@RequestParam int emergencyId, @RequestBody EmergencyEntity emergencyEntity) {
+        return emergencyService.updateEmergency(emergencyId, emergencyEntity);
     }
 
-    @PostMapping("/add")
-    public EmergencyEntity addEmergency(@RequestBody EmergencyEntity emergencyEntity) {
-        System.out.println("Received request with exactLocation: " + emergencyEntity.getExactLocation());
-        return emergencyService.addEmergency(emergencyEntity);
-    }
-
-    @PutMapping("/update")
-    public ResponseEntity<EmergencyEntity> updateEmergency(@RequestBody EmergencyEntity emergencyEntity) {
-        EmergencyEntity updatedEmergency = emergencyService.updateEmergency(emergencyEntity);
-        return ResponseEntity.ok(updatedEmergency);
-    }
-
-    @DeleteMapping("/delete/{id}")
-    public ResponseEntity<Void> deleteEmergency(@PathVariable Integer id) {
-        emergencyService.deleteEmergency(id);
-        return ResponseEntity.noContent().build();
+    @DeleteMapping("/deleteEmergency/{emergencyId}")
+    public void deleteEmergency(@PathVariable int emergencyId) {
+        emergencyService.deleteEmergency(emergencyId);
     }
 }

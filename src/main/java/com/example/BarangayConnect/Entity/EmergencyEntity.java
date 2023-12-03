@@ -14,7 +14,7 @@ public class EmergencyEntity {
     private int emergencyId;
 
     @ManyToOne
-    @JoinColumn(name = "userId", referencedColumnName = "userId")
+    @JoinColumn(name = "userId")
     private UserEntity user;
 
     private String typeOfIncident;
@@ -22,7 +22,7 @@ public class EmergencyEntity {
     private String time;
     private String exactLocation;
     private String incidentDetails;
-
+    
     public EmergencyEntity() {
     }
 
@@ -37,59 +37,59 @@ public class EmergencyEntity {
         this.incidentDetails = incidentDetails;
     }
 
-    public int getEmergencyId() {
-        return emergencyId;
-    }
-
     public void setEmergencyId(int emergencyId) {
         this.emergencyId = emergencyId;
-    }
-
-    public UserEntity getUser() {
-        return user;
     }
 
     public void setUser(UserEntity user) {
         this.user = user;
     }
 
-    public String getTypeOfIncident() {
-        return typeOfIncident;
-    }
-
     public void setTypeOfIncident(String typeOfIncident) {
         this.typeOfIncident = typeOfIncident;
-    }
-
-    public Date getDate() {
-        return date;
     }
 
     public void setDate(Date date) {
         this.date = date;
     }
 
-    public String getTime() {
-        return time;
-    }
-
     public void setTime(String time) {
         this.time = time;
-    }
-
-    public String getExactLocation() {
-        return exactLocation;
     }
 
     public void setExactLocation(String exactLocation) {
         this.exactLocation = exactLocation;
     }
 
-    public String getIncidentDetails() {
-        return incidentDetails;
-    }
-
     public void setIncidentDetails(String incidentDetails) {
         this.incidentDetails = incidentDetails;
+    }
+
+    public int getEmergencyId() {
+        return emergencyId;
+    }
+
+    public UserEntity getUser() {
+        return user;
+    }
+
+    public String getTypeOfIncident() {
+        return typeOfIncident;
+    }
+
+    public Date getDate() {
+        return date;
+    }
+
+    public String getTime() {
+        return time;
+    }
+
+    public String getExactLocation() {
+        return exactLocation;
+    }
+
+    public String getIncidentDetails() {
+        return incidentDetails;
     }
 }
