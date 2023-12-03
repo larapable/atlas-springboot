@@ -19,36 +19,36 @@ import com.example.BarangayConnect.Repository.UserRepository;
 public class UserService {
 
     @Autowired
-    UserRepository lsrepo;
+    UserRepository userRepo;
 
     // Create
     public UserEntity insertInfo(UserEntity lsentity) {
-        if (lsrepo.findByUsername(lsentity.getUsername()) != null) {
+        if (userRepo.findByUsername(lsentity.getUsername()) != null) {
             throw new IllegalArgumentException("Username already exists. Please choose a different username.");
         }
-        return lsrepo.save(lsentity);
+        return userRepo.save(lsentity);
     }
 
     // Add image
     public UserEntity addInfo(UserEntity userEntity) {
-        UserEntity existingUser = lsrepo.findById(userEntity.getId()).orElse(null);
+        UserEntity existingUser = userRepo.findById(userEntity.getId()).orElse(null);
         existingUser.setPhotoPath(userEntity.getPhotoPath());
-        return lsrepo.save(existingUser);
+        return userRepo.save(existingUser);
     }
 
     // Read
     public List<UserEntity> getAllInfo() {
-        return lsrepo.findAll();
+        return userRepo.findAll();
     }
 
     // Read by id
     public Optional<UserEntity> getInfoById(int userId) {
-        return lsrepo.findById(userId);
+        return userRepo.findById(userId);
     }
 
     // Read by username
     public UserEntity getInfoByUsername(String username) {
-        return lsrepo.findByUsername(username);
+        return userRepo.findByUsername(username);
     }
 
     // Update
@@ -58,26 +58,14 @@ public class UserService {
 
         try {
             // search the id number of user/admin that will be updated
-            accInfo = lsrepo.findById(userId).get();
+            accInfo = userRepo.findById(userId).get();
 
-            accInfo.setUsername(newLSDetails.getUsername());
-            accInfo.setPassword(newLSDetails.getPassword());
-            accInfo.setEmail(newLSDetails.getEmail());
-            accInfo.setFname(newLSDetails.getFname());
-            accInfo.setLname(newLSDetails.getLname());
-            accInfo.setAddress(newLSDetails.getAddress());
-            accInfo.setDateOfBirth(newLSDetails.getDateOfBirth());
-            accInfo.setGender(newLSDetails.getGender());
-            accInfo.setMobileNumber(newLSDetails.getMobileNumber());
-            accInfo.setMaritalStatus(newLSDetails.getMaritalStatus());
-            accInfo.setCitizenship(newLSDetails.getCitizenship());
-            accInfo.setReligion(newLSDetails.getReligion());
-            accInfo.setPhotoPath(newLSDetails.getPhotoPath());
-            lsrepo.save(accInfo);
+            accInfo.setIsVerified(newLSDetails.isVerified());
+            userRepo.save(accInfo);
         } catch (NoSuchElementException e) {
             throw new NoSuchElementException("User " + userId + " does not exist!");
         } finally {
-            return lsrepo.save(accInfo);
+            return userRepo.save(accInfo);
         }
     }
 
@@ -88,25 +76,26 @@ public class UserService {
 
         try {
             // search the username of user/admin that will be updated
-            accInfo = lsrepo.findByUsername(username);
+            accInfo = userRepo.findByUsername(username);
 
+            accInfo.setPassword(newLSDetails.getPassword());
             accInfo.setMobileNumber(newLSDetails.getMobileNumber());
             accInfo.setMaritalStatus(newLSDetails.getMaritalStatus());
             accInfo.setCitizenship(newLSDetails.getCitizenship());
             accInfo.setReligion(newLSDetails.getReligion());
-            lsrepo.save(accInfo);
+            userRepo.save(accInfo);
         } catch (NoSuchElementException e) {
             throw new NoSuchElementException("User " + username + " does not exist!");
         } finally {
-            return lsrepo.save(accInfo);
+            return userRepo.save(accInfo);
         }
     }
 
     // Delete
     public String deleteInfo(int userId) {
         String msg = "";
-        if (lsrepo.findById(userId) != null) {
-            lsrepo.deleteById(userId);
+        if (userRepo.findById(userId) != null) {
+            userRepo.deleteById(userId);
             msg = "User " + userId + " has been deleted!";
         } else {
             msg = "User " + userId + " does not exist!";
@@ -115,10 +104,8 @@ public class UserService {
     }
 
     public UserEntity authenticateUser(String username, String password) {
-        UserEntity user = lsrepo.findByUsernameAndPassword(username, password);
-
-        // Check if the user is not null (found) and is verified
-        return user;// != null && user.isVerified();
+        UserEntity user = userRepo.findByUsernameAndPassword(username, password);
+        return user;
     }
 
     public void uploadImage(MultipartFile file) throws IOException {

@@ -28,28 +28,8 @@ public class AnnouncementService {
         return arepo.findById(annId);
     }
 
-    // // Update
-    // @SuppressWarnings("finally")
-    // public AnnouncementEntity updateInfo(int annId, AnnouncementEntity newAnnouncementDetails) {
-    //     AnnouncementEntity annInfo = new AnnouncementEntity();
-
-    //     try {
-    //         // search the id number of announcement that will be updated
-    //         annInfo = arepo.findById(annId).get();
-
-    //         annInfo.setTitle(newAnnouncementDetails.getTitle());
-    //         annInfo.setContent(newAnnouncementDetails.getContent());
-    //         annInfo.setDate(newAnnouncementDetails.getDate());
-    //         arepo.save(annInfo);
-    //     } catch (NoSuchElementException e) {
-    //         throw new NoSuchElementException("Announcement " + annId + " does not exist!");
-    //     } finally {
-    //         return arepo.save(annInfo);
-    //     }
-    // }
-
     // Update
-    // @SuppressWarnings("finally")
+    @SuppressWarnings("finally")
     public AnnouncementEntity updateInfo(int annId, AnnouncementEntity newAnnouncementDetails) {
         AnnouncementEntity annInfo = new AnnouncementEntity();
 
@@ -60,9 +40,11 @@ public class AnnouncementService {
             annInfo.setTitle(newAnnouncementDetails.getTitle());
             annInfo.setContent(newAnnouncementDetails.getContent());
             annInfo.setDate(newAnnouncementDetails.getDate());
-            return arepo.save(annInfo);
+            // return arepo.save(annInfo);
         } catch (NoSuchElementException e) {
             throw new NoSuchElementException("Announcement " + annId + " does not exist!");
+        } finally {
+            return arepo.save(annInfo);
         }
     }
 

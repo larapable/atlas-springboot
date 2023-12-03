@@ -27,14 +27,14 @@ import com.example.BarangayConnect.Service.UserService;
 @RequestMapping("/login-signup")
 public class UserController {
     @Autowired
-    UserService lsservice;
+    UserService uservice;
     @Autowired
     UserRepository urepo;
 
     // Create
     @PostMapping("addInfo")
     public UserEntity insertInfo(@RequestBody UserEntity lsentity) {
-        return lsservice.insertInfo(lsentity);
+        return uservice.insertInfo(lsentity);
     }
 
     // Add Image to tblAccount using username
@@ -42,10 +42,28 @@ public class UserController {
     public UserEntity insertImage(
             @PathVariable String username,
             @RequestParam("image") MultipartFile image) throws IOException {
-        lsservice.uploadImage(image);
-        UserEntity loginSignupEntity = lsservice.getInfoByUsername(username);
+        uservice.uploadImage(image);
+        UserEntity loginSignupEntity = uservice.getInfoByUsername(username);
         loginSignupEntity.setPhotoPath(image.getOriginalFilename());
-        return lsservice.addInfo(loginSignupEntity);
+        return uservice.addInfo(loginSignupEntity);
+    }
+
+    // Read all
+    @GetMapping("getAllUsers")
+    public List<UserEntity> getAllInfo() {
+        return uservice.getAllInfo();
+    }
+
+    // Read by id
+    @GetMapping("getInfoById/{userId}")
+    public Optional<UserEntity> getInfoById(@PathVariable int userId) {
+        return uservice.getInfoById(userId);
+    }
+
+    // Read by username
+    @GetMapping("getInfoByUsername/{username}")
+    public UserEntity getInfoByUsername(@PathVariable String username) {
+        return uservice.getInfoByUsername(username);
     }
 
     // Get image from tblAccount using username
@@ -53,7 +71,7 @@ public class UserController {
     public ResponseEntity<String> getUserImage(@PathVariable String username) {
         try {
             // Retrieve user information by username
-            UserEntity userEntity = lsservice.getInfoByUsername(username);
+            UserEntity userEntity = uservice.getInfoByUsername(username);
 
             if (userEntity != null && userEntity.getPhotoPath() != null) {
                 // If the user has a photoPath, return it
@@ -68,28 +86,10 @@ public class UserController {
         }
     }
 
-    // Read all
-    @GetMapping("getAllInfo")
-    public List<UserEntity> getAllInfo() {
-        return lsservice.getAllInfo();
-    }
-
-    // Read by id
-    @GetMapping("getInfoById/{userId}")
-    public Optional<UserEntity> getInfoById(@PathVariable int userId) {
-        return lsservice.getInfoById(userId);
-    }
-
-    // Read by username
-    @GetMapping("getInfoByUsername/{username}")
-    public UserEntity getInfoByUsername(@PathVariable String username) {
-        return lsservice.getInfoByUsername(username);
-    }
-
     // Update by id
-    @PutMapping("updateInfo")
-    public UserEntity updateInfo(@RequestParam int userId, @RequestBody UserEntity newLSDetails) {
-        return lsservice.updateInfo(userId, newLSDetails);
+    @PutMapping("/updateInfo/{userId}")
+    public UserEntity updateInfo(@PathVariable int userId, @RequestBody UserEntity newLSDetails) {
+        return uservice.updateInfo(userId, newLSDetails);
     }
 
     // Update by username
@@ -97,7 +97,7 @@ public class UserController {
     public ResponseEntity<String> updateUserInfo(@PathVariable String username,
             @RequestBody UserEntity newUserInfo) {
         try {
-            lsservice.updateInfoByUsername(username, newUserInfo);
+            uservice.updateInfoByUsername(username, newUserInfo);
             return ResponseEntity.ok("User info updated successfully");
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
@@ -107,7 +107,7 @@ public class UserController {
     // Delete
     @DeleteMapping("deleteInfo/{userId}")
     public String deleteInfo(@PathVariable int userId) {
-        return lsservice.deleteInfo(userId);
+        return uservice.deleteInfo(userId);
     }
 
     // D - Delete
@@ -133,7 +133,7 @@ public class UserController {
         String password = request.getPassword();
 
         // Your authentication logic here
-        UserEntity authUser = lsservice.authenticateUser(username, password);
+        UserEntity authUser = uservice.authenticateUser(username, password);
 
         if (authUser.isVerified()) {
             return ResponseEntity.ok().body(authUser);
@@ -141,11 +141,4 @@ public class UserController {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Invalid username or password");
         }
     }
-
-    // @PutMapping("/uploadImage/{username}")
-    // public void uploadImage(@RequestParam("username") String username,
-    // @RequestParam("file") MultipartFile image) {
-    // lsservice.uploadImage(username, image);
-    // }
-
 }

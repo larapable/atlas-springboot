@@ -8,6 +8,6 @@ public class BarangayConnectApplication {
 
 	public static void main(String[] args) {
 		SpringApplication.run(BarangayConnectApplication.class, args);
-		System.out.print("Successfully run!!");
+		System.out.print("Successfully run!");
 	}
 }

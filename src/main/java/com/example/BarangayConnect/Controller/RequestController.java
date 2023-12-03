@@ -3,6 +3,8 @@ package com.example.BarangayConnect.Controller;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -27,6 +29,7 @@ public class RequestController {
     @PostMapping("/insertRequest")
     public RequestEntity insertRequest(@RequestBody RequestEntity request) {
         System.out.println(request.getUser().getId());
+        request.setTrack("processing");
         return rserv.insertRequest(request);
     }
 
@@ -40,9 +43,18 @@ public class RequestController {
         return rserv.updateRequest(docid, newRequestDetails);
     }
 
+
     @DeleteMapping("/deleteRequest/{docid}")
-    public String deleteRequest(@PathVariable int docid) {
-        return rserv.deleteRequest(docid);
+public ResponseEntity<String> deleteRequest(@PathVariable int docid) {
+    try {
+        // Instead of physically deleting, set isDeleted to true
+        rserv.softDeleteRequest(docid);
+        return ResponseEntity.ok("Request marked as deleted successfully");
+    } catch (Exception e) {
+        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                             .body("Failed to mark request as deleted: " + e.getMessage());
     }
+}
+
 
 }
