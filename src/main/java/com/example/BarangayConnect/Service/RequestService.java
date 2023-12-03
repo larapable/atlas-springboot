@@ -5,8 +5,9 @@ import java.util.List;
 import java.util.NoSuchElementException;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.crossstore.ChangeSetPersister.NotFoundException;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.web.server.ResponseStatusException;
 
 import com.example.BarangayConnect.Entity.RequestEntity;
 import com.example.BarangayConnect.Entity.UserEntity;
@@ -36,33 +37,14 @@ public class RequestService {
 
 
     //Update
-    @SuppressWarnings("finally")
     public RequestEntity updateRequest(int docid, RequestEntity newRequestDetails) {
-        RequestEntity request = new RequestEntity();
-        try {
-            request = rrepo.findById(docid).orElseThrow(() -> new NoSuchElementException("Request " + docid + " not found"));
-            request.setLastname(newRequestDetails.getLastname());
-            request.setFirstname(newRequestDetails.getFirstname());
-            request.setMiddlename(newRequestDetails.getMiddlename());
-            request.setSuffix(newRequestDetails.getSuffix());
-            request.setBirthdate(newRequestDetails.getBirthdate());
-            request.setAge(newRequestDetails.getAge());
-            request.setGender(newRequestDetails.getGender());
-            request.setNumcopies(newRequestDetails.getNumcopies());
-            request.setPurok(newRequestDetails.getPurok());
-            request.setPurpose(newRequestDetails.getPurpose());
-            request.setDoctype(newRequestDetails.getDoctype());
-            request.setOthers(newRequestDetails.getOthers());
-            request.setType(newRequestDetails.getType());
-            request.setContactnum(newRequestDetails.getContactnum());
-            request.setEmail(newRequestDetails.getEmail());
-            request.setTrack(newRequestDetails.getTrack());
-        } catch (NoSuchElementException ex) {
-            throw new NoSuchElementException("Request " + docid + " does not exist!");
-        } finally {
-            return rrepo.save(request);
-        }
-    }
+    RequestEntity existingRequest = rrepo.findById(docid)
+            .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Request not found with id: " + docid));
+    existingRequest.setTrack(newRequestDetails.getTrack());
+
+    return rrepo.save(existingRequest);
+}
+    
 
     public RequestEntity getRequestById(int docid) {
         return rrepo.findById(docid).orElse(null);
@@ -81,6 +63,7 @@ public class RequestService {
           return rrepo.save(existingRequest);
     }
     
+
 
 
     //Delete 
