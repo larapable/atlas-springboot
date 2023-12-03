@@ -23,16 +23,17 @@ public class EventController {
     EventService eventService;
 
     // Create
-    @PostMapping("addEvent")
+    @PostMapping("/addEvent")
     public EventEntity addEvent(@RequestBody EventEntity eventEntity) {
         return eventService.addEvent(eventEntity);
     }
 
     // Read 
-    @GetMapping("getAllEvent")
+    @GetMapping("/getAllEvent")
     public List<EventEntity> getAllInfo() {
         return eventService.getAllInfo();
     }
+    
     // Read 
     @GetMapping("/getAllEVentByID/{eventId}")
     public List<EventEntity> getAllInfoById(@PathVariable int eventId) {

@@ -1,5 +1,6 @@
 package com.example.BarangayConnect.Entity;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -17,13 +18,15 @@ public class EventEntity {
     private String eventDate;
     private String eventLocation;
     private String eventTime;
+    @Column(name = "isDeleted", columnDefinition = "BOOLEAN")
+    private boolean isDeleted;
 
     public EventEntity() {
         super();
     }
 
     public EventEntity(int eventId, String eventTitle, String eventDescription, String eventDate, String eventLocation,
-            String eventTime) {
+            String eventTime, boolean isDeleted) {
         super();
         this.eventId = eventId;
         this.eventTitle = eventTitle;
@@ -31,6 +34,7 @@ public class EventEntity {
         this.eventDate = eventDate;
         this.eventLocation = eventLocation;
         this.eventTime = eventTime;
+        this.isDeleted = isDeleted;
     }
 
     public int getEventID() {
@@ -81,4 +85,11 @@ public class EventEntity {
         this.eventTime = eventTime;
     }
 
+    public boolean getIsDeleted() {
+        return isDeleted;
+    }
+
+    public void setIsDeleted(boolean isDeleted) {
+        this.isDeleted = isDeleted;
+    }
 }

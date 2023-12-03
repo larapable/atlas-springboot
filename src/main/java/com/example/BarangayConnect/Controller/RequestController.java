@@ -13,7 +13,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.example.BarangayConnect.Entity.RequestEntity;
@@ -38,14 +37,20 @@ public class RequestController {
         return rserv.getAllRequest();
     }
 
-    @PutMapping("/updateRequest") 
-    public RequestEntity updateRequest(@RequestParam int docid, @RequestBody RequestEntity newRequestDetails) {
-        return rserv.updateRequest(docid, newRequestDetails);
+    @PutMapping("/updateRequest/{docid}")
+    public ResponseEntity<RequestEntity> updateRequest(@PathVariable int docid, @RequestBody RequestEntity newRequestDetails) {
+    try {
+        RequestEntity updatedRequest = rserv.updateRequest(docid, newRequestDetails);
+        return ResponseEntity.ok(updatedRequest);
+    } catch (Exception e) {
+        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                             .body(null);  // You might want to include an error message here
     }
+}
 
 
     @DeleteMapping("/deleteRequest/{docid}")
-public ResponseEntity<String> deleteRequest(@PathVariable int docid) {
+    public ResponseEntity<String> deleteRequest(@PathVariable int docid) {
     try {
         // Instead of physically deleting, set isDeleted to true
         rserv.softDeleteRequest(docid);
