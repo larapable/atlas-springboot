@@ -54,4 +54,8 @@ public class AnnouncementsService {
             return "Announcement " + announcementId + " does not exist!";
         }
     }
+
+    public AnnouncementsEntity findById(int announcementId) {
+        return announcementsRepository.findById(announcementId).orElse(null);
+    }
 }
