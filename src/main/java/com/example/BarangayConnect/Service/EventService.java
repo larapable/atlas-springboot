@@ -17,14 +17,14 @@ public class EventService {
         return eventRepository.save(eventEntity);
     }
 
-    // Read
-    public List<EventEntity> getAllInfo() {
-        return eventRepository.findAll();
-    }
-
     // Read by id
     public Optional<EventEntity> getInfoById(int eventId) {
         return eventRepository.findById(eventId);
+    }
+
+    // Read
+    public List<EventEntity> getAllInfo() {
+        return eventRepository.findAll();
     }
 
     // Update
@@ -58,10 +58,6 @@ public class EventService {
             msg = "Event " + eventId + " does not exist!";
         }
         return msg;
-    }
-
-    public List<EventEntity> findById(int eventId) {
-        return null;
     }
 
 }

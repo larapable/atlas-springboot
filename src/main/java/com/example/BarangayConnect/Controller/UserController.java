@@ -37,7 +37,7 @@ public class UserController {
         return uservice.insertInfo(lsentity);
     }
 
-    // Add Image to tblAccount using username
+    // Add Imagepath to tblAccount using username
     @PostMapping("/uploadImage/{username}")
     public UserEntity insertImage(
             @PathVariable String username,
