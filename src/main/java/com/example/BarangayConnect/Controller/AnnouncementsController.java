@@ -46,6 +46,11 @@ public class AnnouncementsController {
     public void deleteAnnouncement(@PathVariable int announcementId) {
         announcementsService.deleteAnnouncement(announcementId);
     }
+
+    @GetMapping("getInfoById/{announcementId}")
+    public AnnouncementsEntity getAnnouncementID(@PathVariable int announcementId) {
+        return announcementsService.findById(announcementId);
+    }
 }
 
 
