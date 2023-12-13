@@ -39,7 +39,7 @@ public class UserEntity {
 
     public UserEntity(int userId, String username, String password, String email, String fname, String lname,
             String address, String dateOfBirth, String gender, String mobileNumber, String maritalStatus,
-            String citizenship, String religion, boolean isVerified, boolean isDeleted,String photoPath) {
+            String citizenship, String religion, boolean isVerified, boolean isDeleted, String photoPath) {
         super();
         this.userId = userId;
         this.username = username;
@@ -182,9 +182,9 @@ public class UserEntity {
     }
 
     public String getPhotoPath() {
-        return this.photoPath;
+        return photoPath;
     }
-
+    
     public boolean getIsDeleted() {
         return isDeleted;
     }
