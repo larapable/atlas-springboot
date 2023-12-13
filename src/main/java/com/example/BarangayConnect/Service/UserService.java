@@ -31,9 +31,9 @@ public class UserService {
 
     // Add image
     public UserEntity addInfo(UserEntity userEntity) {
-    UserEntity existingUser = userRepo.findById(userEntity.getId()).orElse(null);
-    existingUser.setPhotoPath(userEntity.getPhotoPath());
-    return userRepo.save(existingUser);
+        UserEntity existingUser = userRepo.findById(userEntity.getId()).orElse(null);
+        existingUser.setPhotoPath(userEntity.getPhotoPath());
+        return userRepo.save(existingUser);
     }
 
     // Read

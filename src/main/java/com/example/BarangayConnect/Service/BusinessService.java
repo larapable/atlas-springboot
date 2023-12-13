@@ -22,21 +22,28 @@ import com.example.BarangayConnect.Repository.BusinessRepository;
 @Service
 @Transactional
 public class BusinessService {
-    
+
     @Autowired
     private BusinessRepository busRepository;
 
-    //read
+    // read
     public List<BusinessEntity> getAllBusiness() {
         return busRepository.findAll();
     }
 
-    //add
+    // add
     public BusinessEntity insertAdminBusiness(BusinessEntity busEntity) {
         return busRepository.save(busEntity);
     }
 
-    //update
+    // Add image
+    public BusinessEntity addBusinessImage(BusinessEntity busEntity) {
+        BusinessEntity existingBusiness = busRepository.findById(busEntity.getBusId()).orElse(null);
+        existingBusiness.setPhotoPath(busEntity.getPhotoPath());
+        return busRepository.save(existingBusiness);
+    }
+
+    // update
     public BusinessEntity updateBusiness(int busId, BusinessEntity newBusinessDetails) {
 
         BusinessEntity businessList = busRepository.findById(busId)
@@ -45,12 +52,12 @@ public class BusinessService {
         businessList.setBusTitle(newBusinessDetails.getBusTitle());
         businessList.setDate(newBusinessDetails.getDate());
         businessList.setBusContent(newBusinessDetails.getBusContent());
-        //insert photo here?
+        // insert photo here?
 
         return busRepository.save(businessList);
     }
 
-    //delete
+    // delete
     public String deleteBusiness(int busId) {
         Optional<BusinessEntity> directory = busRepository.findById(busId);
 
@@ -70,12 +77,8 @@ public class BusinessService {
         return busRepository.findById(busId).orElse(null);
     }
 
-
-
-
-
-    public void uploadImage(MultipartFile file) throws IOException {
-        Path imagesPath = Paths.get("business_images"); // Specify your directory
+    public String uploadImage(MultipartFile file) throws IOException {
+        Path imagesPath = Paths.get("images"); // Specify your directory
         if (file.getOriginalFilename() == null) {
             throw new IOException("Original name is null");
         }
@@ -84,7 +87,7 @@ public class BusinessService {
         try (InputStream inputStream = file.getInputStream()) {
             Files.copy(inputStream, filePath, StandardCopyOption.REPLACE_EXISTING);
         }
+        return originalFilename.toString(); // Return only the filename
     }
-
 
 }

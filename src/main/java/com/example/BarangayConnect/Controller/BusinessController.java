@@ -1,6 +1,7 @@
 package com.example.BarangayConnect.Controller;
 
 import java.io.IOException;
+import java.sql.Date;
 import java.util.List;
 import java.util.NoSuchElementException;
 
@@ -26,21 +27,58 @@ import com.example.BarangayConnect.Service.BusinessService;
 @RestController
 @RequestMapping("/business")
 public class BusinessController {
-    
+
     @Autowired
     private BusinessService busService;
 
+    // Add Business
     @PostMapping("/insertAdminBusiness")
-    public ResponseEntity<BusinessEntity> insertAdminBusiness(  @RequestBody BusinessEntity busEntity) {
+    public ResponseEntity<BusinessEntity> insertAdminBusiness(@RequestBody BusinessEntity busEntity) {
         BusinessEntity savedEntity = busService.insertAdminBusiness(busEntity);
         return ResponseEntity.ok(savedEntity);
     }
 
+    // Add Business with Image
+    @PostMapping("/insertAdminBusinessWithImage")
+    public ResponseEntity<BusinessEntity> insertAdminBusinessImage(
+            @RequestParam("title") String title,
+            @RequestParam("description") String description,
+            @RequestParam("date") Date date,
+            @RequestParam("image") MultipartFile image) throws IOException {
+        // Upload the image and get the path
+        String imagePath = busService.uploadImage(image);
+
+        // Create a new BusinessEntity
+        BusinessEntity businessEntity = new BusinessEntity();
+        businessEntity.setBusTitle(title);
+        businessEntity.setBusContent(description);
+        businessEntity.setDate(date);
+        businessEntity.setPhotoPath(imagePath); // Set the photo path to the returned image path
+
+        // Save the new BusinessEntity
+        BusinessEntity savedEntity = busService.insertAdminBusiness(businessEntity);
+
+        return ResponseEntity.ok(savedEntity);
+    }
+
+    // Add Image to Business using businessId
+    @PostMapping("/uploadImage/{businessId}")
+    public BusinessEntity uploadImagebyId(
+            @PathVariable int businessId,
+            @RequestParam("image") MultipartFile image) throws IOException {
+        busService.uploadImage(image);
+        BusinessEntity businessEntity = busService.findById(businessId);
+        businessEntity.setPhotoPath(image.getOriginalFilename());
+        return busService.addBusinessImage(businessEntity);
+    }
+
+    // Get all Business
     @GetMapping("/getAllBusiness")
     public List<BusinessEntity> getAllBusiness() {
         return busService.getAllBusiness();
     }
 
+    // Update Business by Id
     @PutMapping("/updateBusiness/{busId}")
     public BusinessEntity updateBusiness(@PathVariable int busId,
             @RequestBody BusinessEntity busEntity) {
@@ -56,26 +94,6 @@ public class BusinessController {
     public BusinessEntity getBusinessID(@PathVariable int busId) {
         return busService.findById(busId);
     }
-
-
-
-
-    // Add Image to BusinessEntity using businessId
-    @PostMapping("/uploadImage/{businessId}")
-    public ResponseEntity<String> uploadImage(
-            @PathVariable int businessId,
-            @RequestParam("image") MultipartFile image) {
-        try {
-            busService.uploadImage(image);
-            BusinessEntity businessEntity = busService.findById(businessId);
-            businessEntity.setPhotoPath(image.getOriginalFilename());
-            busService.updateBusiness(businessId, businessEntity);
-            return ResponseEntity.ok("Image uploaded successfully");
-        } catch (IOException | NoSuchElementException e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
-        }
-    }
-
 
     // Get image from BusinessEntity using businessId
     @GetMapping("/getBusinessImage/{businessId}")
