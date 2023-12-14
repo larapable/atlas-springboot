@@ -28,7 +28,7 @@ public class RequestController {
     @PostMapping("/insertRequest")
     public RequestEntity insertRequest(@RequestBody RequestEntity request) {
         System.out.println(request.getUser().getId());
-        request.setTrack("processing");
+        request.setTrack("pending");
         return rserv.insertRequest(request);
     }
 
