@@ -12,11 +12,14 @@ import javax.persistence.Table;
 @Entity
 @Table(name = "tbladmindirectorylist")
 public class AdminDirectoryListEntity {
-    
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "admindirectorylistId")
     private int admindirectorylistId;
+
+    @Column(name = "image_name")
+    private String imageName;
     private String name;
     private String email;
     private int age;
@@ -25,13 +28,14 @@ public class AdminDirectoryListEntity {
     private String position;
     private String message;
     private int isdelete;
-    
+
     public AdminDirectoryListEntity() {
     }
 
-    public AdminDirectoryListEntity(int admindirectorylistId, String name, String email,
+    public AdminDirectoryListEntity(int admindirectorylistId, String imageName, String name, String email,
             int age, String status, Date birthdate, String position, String message, int isdelete) {
         this.admindirectorylistId = admindirectorylistId;
+        this.imageName = imageName;
         this.name = name;
         this.email = email;
         this.age = age;
@@ -44,6 +48,10 @@ public class AdminDirectoryListEntity {
 
     public void setAdmindirectorylistId(int admindirectorylistId) {
         this.admindirectorylistId = admindirectorylistId;
+    }
+
+    public void setImageName(String imageName) {
+        this.imageName = imageName;
     }
 
     public void setName(String name) {
@@ -80,6 +88,10 @@ public class AdminDirectoryListEntity {
 
     public int getAdmindirectorylistId() {
         return admindirectorylistId;
+    }
+
+    public String getImageName() {
+        return imageName;
     }
 
     public String getName() {

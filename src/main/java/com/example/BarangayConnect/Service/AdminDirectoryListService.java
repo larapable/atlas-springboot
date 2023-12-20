@@ -1,22 +1,46 @@
 package com.example.BarangayConnect.Service;
 
+import java.io.IOException;
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.example.BarangayConnect.Entity.AdminDirectoryListEntity;
 import com.example.BarangayConnect.Repository.AdminDirectoryListRepository;
+import org.springframework.util.StringUtils; // Import StringUtils from Spring
 
 @Service
 public class AdminDirectoryListService {
     @Autowired
     private AdminDirectoryListRepository adminDirectoryListRepository;
 
-    public AdminDirectoryListEntity insertAdminDirectoryList(AdminDirectoryListEntity adminDirectoryListEntity) {
+    public AdminDirectoryListEntity insertAdminDirectoryList(AdminDirectoryListEntity adminDirectoryListEntity,
+            MultipartFile image) throws IOException {
+        String imageName = saveImage(image);
+        adminDirectoryListEntity.setImageName(imageName);
         return adminDirectoryListRepository.save(adminDirectoryListEntity);
+    }
+
+    public String saveImage(MultipartFile image) throws IOException {
+        String originalFilename = StringUtils.cleanPath(image.getOriginalFilename());
+    
+        // Use the original filename without modification
+        String imageName = originalFilename;
+    
+        // Implement the logic to save the image with the imageName
+        // Example: Save the image to a folder with the imageName
+        // ... (save the image to a folder)
+    
+        return imageName;
+    }
+
+    public AdminDirectoryListEntity getAdminDirectoryListById(int admindirectorylistId) {
+        return adminDirectoryListRepository.findById(admindirectorylistId)
+                .orElseThrow(() -> new NoSuchElementException("Directory " + admindirectorylistId + " not found"));
     }
 
     public List<AdminDirectoryListEntity> getAllAdminDirectoryList() {
