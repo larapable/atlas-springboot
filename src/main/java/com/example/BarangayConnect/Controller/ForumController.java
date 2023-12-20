@@ -97,5 +97,16 @@ public class ForumController {
     }
 }
 
+@PutMapping("/updateReply/{replyId}")
+public ResponseEntity<ReplyEntity> updateReply(@PathVariable int replyId, @RequestBody String newReplyContent) {
+    try {
+        ReplyEntity updatedReply = fserv.updateReply(replyId, newReplyContent);
+        return ResponseEntity.ok(updatedReply);
+    } catch (Exception e) {
+        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                             .body(null);  // You might want to include an error message here
+    }
+}
+
 
 }
