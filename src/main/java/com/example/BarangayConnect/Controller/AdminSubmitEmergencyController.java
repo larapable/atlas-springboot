@@ -4,7 +4,6 @@ import com.example.BarangayConnect.Entity.AdminSubmitEmergencyEntity;
 import com.example.BarangayConnect.Service.AdminSubmitEmergencyService;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -34,8 +33,7 @@ public class AdminSubmitEmergencyController {
     }
 
     @DeleteMapping("/admindeleteEmergency/{adminemergencyId}")
-    public ResponseEntity<String> deleteEmergency(@PathVariable int adminemergencyId) {
-        String result = adminSubmitEmergencyService.deleteEmergency(adminemergencyId);
-        return ResponseEntity.ok(result);   
+    public void deleteEmergency(@PathVariable int adminemergencyId) {
+        adminSubmitEmergencyService.deleteEmergency(adminemergencyId);
     }
 }

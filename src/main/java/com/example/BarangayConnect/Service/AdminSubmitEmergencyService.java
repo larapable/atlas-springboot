@@ -24,7 +24,8 @@ public class AdminSubmitEmergencyService {
         return adminSubmitEmergencyRepository.findAll();
     }
 
-    public AdminSubmitEmergencyEntity updateEmergency(int adminemergencyId, AdminSubmitEmergencyEntity newEmergencyDetails) {
+    public AdminSubmitEmergencyEntity updateEmergency(int adminemergencyId,
+            AdminSubmitEmergencyEntity newEmergencyDetails) {
         AdminSubmitEmergencyEntity emergency = adminSubmitEmergencyRepository.findById(adminemergencyId)
                 .orElseThrow(() -> new NoSuchElementException("Emergency " + adminemergencyId + " not found"));
 
@@ -35,6 +36,10 @@ public class AdminSubmitEmergencyService {
         emergency.setIncidentDetails(newEmergencyDetails.getIncidentDetails());
 
         return adminSubmitEmergencyRepository.save(emergency);
+    }
+
+    public AdminSubmitEmergencyEntity getAlertAadmin(int adminemergencyId) {
+        return adminSubmitEmergencyRepository.findById(adminemergencyId).get();
     }
 
     public String deleteEmergency(int adminemergencyId) {
@@ -50,5 +55,5 @@ public class AdminSubmitEmergencyService {
         } else {
             return "Alert " + adminemergencyId + " does not exist!";
         }
-    }    
+    }
 }

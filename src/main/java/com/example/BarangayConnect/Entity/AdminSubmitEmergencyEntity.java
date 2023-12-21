@@ -38,8 +38,8 @@ public class AdminSubmitEmergencyEntity {
         this.isdelete = isdelete;
     }
 
-    public void setAdminemergencyId(int emergencyId) {
-        this.adminemergencyId = emergencyId;
+    public void setAdminemergencyId(int adminemergencyId) {
+        this.adminemergencyId = adminemergencyId;
     }
 
     public void setTypeOfIncident(String typeOfIncident) {
