@@ -2,20 +2,20 @@ package com.example.BarangayConnect.Entity;
 
 import java.sql.Date;
 
-import javax.persistence.*;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.Table;
 
 @Entity
-@Table(name = "tblemergency")
-public class EmergencyEntity {
-
+@Table(name = "tbladminemergency")
+public class AdminSubmitEmergencyEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "emergencyId")
-    private int emergencyId;
-
-    @ManyToOne
-    @JoinColumn(name = "userId")
-    private UserEntity user;
+    @Column(name = "adminemergencyId")
+    private int adminemergencyId;
 
     private String typeOfIncident;
     private Date date;
@@ -24,13 +24,12 @@ public class EmergencyEntity {
     private String incidentDetails;
     private int isdelete;
     
-    public EmergencyEntity() {
+    public AdminSubmitEmergencyEntity() {
     }
 
-    public EmergencyEntity(int emergencyId, UserEntity user, String typeOfIncident, Date date, String time,
+    public AdminSubmitEmergencyEntity(int adminemergencyId, String typeOfIncident, Date date, String time,
             String exactLocation, String incidentDetails, int isdelete) {
-        this.emergencyId = emergencyId;
-        this.user = user;
+        this.adminemergencyId = adminemergencyId;
         this.typeOfIncident = typeOfIncident;
         this.date = date;
         this.time = time;
@@ -39,12 +38,8 @@ public class EmergencyEntity {
         this.isdelete = isdelete;
     }
 
-    public void setEmergencyId(int emergencyId) {
-        this.emergencyId = emergencyId;
-    }
-
-    public void setUser(UserEntity user) {
-        this.user = user;
+    public void setAdminemergencyId(int emergencyId) {
+        this.adminemergencyId = emergencyId;
     }
 
     public void setTypeOfIncident(String typeOfIncident) {
@@ -71,12 +66,8 @@ public class EmergencyEntity {
         this.isdelete = isdelete;
     }
 
-    public int getEmergencyId() {
-        return emergencyId;
-    }
-
-    public UserEntity getUser() {
-        return user;
+    public int getAdminemergencyId() {
+        return adminemergencyId;
     }
 
     public String getTypeOfIncident() {

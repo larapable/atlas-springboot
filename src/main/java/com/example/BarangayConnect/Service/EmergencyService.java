@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.NoSuchElementException;
+import java.util.Optional;
 
 @Service
 public class EmergencyService {
@@ -53,12 +54,18 @@ public class EmergencyService {
 
     //Delete 
     public String deleteEmergency(int emergencyId) {
-        String msg="";
-        if (emergencyRepository.findById(emergencyId) != null) {
-            emergencyRepository.deleteById(emergencyId);
-            msg = "Request "+emergencyId+" is succesfully deleted!";
-        } else 
-            msg = "Request "+emergencyId+" does not exist!";
-            return msg;
-    } 
+        Optional<EmergencyEntity> emergency = emergencyRepository.findById(emergencyId);
+
+        if (emergency.isPresent()) {
+            EmergencyEntity entity = emergency.get();
+
+            // Soft delete by updating isdelete field to 1
+            entity.setIsdelete(1);
+            emergencyRepository.save(entity);
+
+            return "Alert " + emergencyId + " is marked as deleted!";
+        } else {
+            return "Alert " + emergencyId + " does not exist!";
+        }
+    }
 }
