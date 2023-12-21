@@ -24,6 +24,7 @@ public class ReplyEntity {
     private UserEntity user;
 
     private String reply;
+    
 
     public ReplyEntity() {
     }

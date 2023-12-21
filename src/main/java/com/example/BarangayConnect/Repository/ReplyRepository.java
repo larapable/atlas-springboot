@@ -11,4 +11,5 @@ import com.example.BarangayConnect.Entity.ReplyEntity;
 public interface ReplyRepository extends JpaRepository<ReplyEntity,Integer>{
  
    List<ReplyEntity> findByForum(ForumEntity forum);
+   
 }

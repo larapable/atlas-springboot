@@ -89,8 +89,15 @@ public class ForumService {
         return rrepo.findByForum(post);
     }
 
-  
+    // Update Reply
+    public ReplyEntity updateReply(int replyId, String newReplyContent) {
+    ReplyEntity existingReply = rrepo.findById(replyId)
+            .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Reply not found with id: " + replyId));
 
+    existingReply.setReply(newReplyContent);
+
+    return rrepo.save(existingReply);
+}
 
 }
            
