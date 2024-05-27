@@ -105,8 +105,6 @@ public class GoalEntity {
     
     
 }
-
-
 // Getters and setters for department
 public DepartmentEntity getDepartment() {
     return department;
