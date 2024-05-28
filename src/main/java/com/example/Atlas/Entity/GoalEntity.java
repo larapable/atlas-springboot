@@ -103,8 +103,7 @@ public class GoalEntity {
     public void setEndDate(LocalDate endDate) {
         this.endDate = endDate;
     
-    
-}
+    }
 // Getters and setters for department
 public DepartmentEntity getDepartment() {
     return department;

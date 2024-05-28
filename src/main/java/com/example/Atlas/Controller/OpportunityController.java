@@ -1,8 +1,7 @@
 package com.example.Atlas.Controller;
 
-
-import java.util.List;
 import java.util.NoSuchElementException;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -17,30 +16,30 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.example.Atlas.Entity.WeaknessEntity;
-import com.example.Atlas.Service.WeaknessService;
+import com.example.Atlas.Entity.OpportunityEntity;
+import com.example.Atlas.Service.OpportunityService;
+
 
 @RestController
-@RequestMapping("/weaknesses")
+@RequestMapping("/opportunities")
 @CrossOrigin
-public class WeaknessController {
+public class OpportunityController {
     @Autowired
-    WeaknessService weaknessserv;
+    OpportunityService opportunityserv;
 
     @PostMapping("insert")
-    public WeaknessEntity insertWeakness(@RequestBody WeaknessEntity weakness) {
-        return weaknessserv.insertWeakness(weakness);
+    public OpportunityEntity insertOpportunity(@RequestBody OpportunityEntity opportunity) {
+        return opportunityserv.insertOpportunity(opportunity);
     }
     
-
     @GetMapping("/get/{departmentId}")
-    public ResponseEntity<?> getWeaknessByDepartmentId(@PathVariable int departmentId) {
+    public ResponseEntity<?> getOpportunityByDepartmentId(@PathVariable int departmentId) {
         try {
-            List<WeaknessEntity> weakness = weaknessserv.getWeaknessByDepartmentId(departmentId);
-            if (weakness != null && !weakness.isEmpty()) {
-                return ResponseEntity.ok(weakness);
+            List<OpportunityEntity> opportunity = opportunityserv.getOpportunityByDepartmentId(departmentId);
+            if (opportunity != null && !opportunity.isEmpty()) {
+                return ResponseEntity.ok(opportunity);
             } else {
-                return ResponseEntity.status(HttpStatus.NOT_FOUND).body("No weakness found for department id " + departmentId);
+                return ResponseEntity.status(HttpStatus.NOT_FOUND).body("No opportunity found for department id " + departmentId);
             }
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error: " + e.getMessage());
@@ -48,11 +47,11 @@ public class WeaknessController {
     }
 
     @PutMapping("/update/{departmentId}")
-    public ResponseEntity<?> updateWeaknessById(@PathVariable int departmentId, @RequestBody WeaknessEntity request) {
+    public ResponseEntity<?> updateOpportunityById(@PathVariable int departmentId, @RequestBody OpportunityEntity request) {
         try {
             request.getDepartment().setId(departmentId);
-            WeaknessEntity updatedWeakness = weaknessserv.updateWeaknessById(request);
-            return ResponseEntity.ok(updatedWeakness); // Return the updated entity directly
+            OpportunityEntity updatedOpportunity = opportunityserv.updateOpportunityById(request);
+            return ResponseEntity.ok(updatedOpportunity); // Return the updated entity directly
         } catch (NoSuchElementException e) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Error: " + e.getMessage());
         } catch (Exception e) {
@@ -61,19 +60,18 @@ public class WeaknessController {
     }
 
     @DeleteMapping("/delete/{id}")
-    public ResponseEntity<String> deleteWeakness(@PathVariable int id) {
+    public ResponseEntity<String> deleteOpportunity(@PathVariable int id) {
         try {
-            weaknessserv.deleteWeakness(id);
-            return ResponseEntity.ok("Weakness with ID " + id + " deleted successfully");
+            opportunityserv.deleteOpportunity(id);
+            return ResponseEntity.ok("Opportunity with ID " + id + " opportunity successfully");
         } catch (NoSuchElementException e) {
             return ResponseEntity.notFound().build();
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                    .body("Failed to delete weakness: " + e.getMessage());
+                    .body("Failed to delete opportunity: " + e.getMessage());
         }
     }
-    
 
-   
+
     
 }
