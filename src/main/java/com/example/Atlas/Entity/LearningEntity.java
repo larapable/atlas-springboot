@@ -1,5 +1,6 @@
 package com.example.Atlas.Entity;
 
+
 import java.time.LocalDate;
 
 import javax.persistence.Entity;
@@ -11,8 +12,8 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 
 @Entity
-@Table(name = "financial_bsc")
-public class Financial_bsc {
+@Table(name = "learning_bsc")
+public class LearningEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
@@ -119,5 +120,6 @@ public class Financial_bsc {
     public void setDepartment(DepartmentEntity department) {
         this.department = department;
     }
+
     
 }
