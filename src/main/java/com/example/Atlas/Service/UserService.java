@@ -34,5 +34,26 @@ public class UserService {
     public boolean checkUserNameExists(String username) {
         return userrepo.existsByUsername(username);
     }
+    
+    public UserEntity getUserByUsername(String username) {
+        return userrepo.findByUsername(username);
+    }
+
+    public String updateUserGeneratedAiStrats(String username) {
+        UserEntity user = userrepo.findByUsername(username);
+        if (user == null) {
+            return "User not found";
+        }
+
+        if (user.getGeneratedAiStrats() == 0) {
+            user.setGeneratedAiStrats(1);
+            userrepo.save(user);
+            return "User updated successfully";
+        }
+
+        return "User already has generatedAiStrats set";
+    }
+
+   
  
 }

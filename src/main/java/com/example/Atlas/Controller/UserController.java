@@ -1,15 +1,20 @@
 package com.example.Atlas.Controller;
 
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 
 import java.util.Map;
+import java.util.NoSuchElementException;
 import java.util.HashMap;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 
 import com.example.Atlas.Entity.UserEntity;
 import com.example.Atlas.Service.UserService;
@@ -40,9 +45,18 @@ public class UserController {
     public UserEntity insertUser(@RequestBody UserEntity user) {
         return userserv.insertUser(user);
     }
+
+    @GetMapping("get/{username}")
+    public UserEntity getUser(@PathVariable String username) {
+        return userserv.getUserByUsername(username);
+    }
+
+  
+    @PutMapping("/update/{username}")
+    public String updateUser(@PathVariable String username) {
+        return userserv.updateUserGeneratedAiStrats(username);
+    }
+  
     
-
-
-   
    
 }

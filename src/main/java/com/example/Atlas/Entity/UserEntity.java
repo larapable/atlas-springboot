@@ -30,9 +30,9 @@ public class UserEntity {
     @JoinColumn(name = "department_id") // Specify the foreign key column
     private DepartmentEntity department;
 
-    @Column(columnDefinition = "tinyint DEFAULT 0") 
-    private int generatedAiStrats; 
-    
+    @Column(columnDefinition = "tinyint DEFAULT '0'")
+    private int generatedAiStrats;
+
 
     // Getters and setters for id
     public int getId() {
@@ -61,7 +61,7 @@ public class UserEntity {
         this.email = email;
     }
 
-    // Getters and setters for password
+    // Getters and setters for password 
     public String getPassword() {
         return password;
     }

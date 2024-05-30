@@ -11,6 +11,9 @@ import org.springframework.stereotype.Service;
 
 import com.example.Atlas.Entity.DepartmentEntity;
 import com.example.Atlas.Entity.FinancialEntity;
+import com.example.Atlas.Entity.StakeholderEntity;
+import com.example.Atlas.Entity.LearningEntity;
+import com.example.Atlas.Entity.InternalEntity;
 import com.example.Atlas.Repository.DepartmentRepository;
 import com.example.Atlas.Repository.FinancialRepository;
 import com.example.Atlas.Repository.InternalRepository;
@@ -71,6 +74,8 @@ public class StratmapService {
         }
     }
 
+    
+
     public String deleteFinancial(int financialId) {
         String msg="";
         if (financialrepo.findById(financialId) != null) {
@@ -80,8 +85,118 @@ public class StratmapService {
             msg = "Strength "+financialId+" does not exist!";
             return msg;
     } 
+
+    public FinancialEntity editFinancialEntity(int id, FinancialEntity financialEntity) {
+        // Find the existing financial entity by its ID
+        FinancialEntity existingEntity = financialrepo.findById(id)
+            .orElseThrow(() -> new NoSuchElementException("Financial entity not found with id: " + id));
+
+        existingEntity.setOffice_target(financialEntity.getOffice_target());
+        existingEntity.setDepartment(financialEntity.getDepartment());
     
+        // Save the updated entity to the database
+        return financialrepo.save(existingEntity);
+    }
     
+
+
+    public StakeholderEntity insertStakeholder(StakeholderEntity request) {
+        DepartmentEntity department = departmentrepo.findById(request.getDepartment().getId()).orElseThrow(() -> new NoSuchElementException("Department not found"));
+        request.setDepartment(department);
+        return stakeholderrepo.save(request);
+    }
+
+    public List<StakeholderEntity> getStakeholderByDepartmentId(int departmentId) {
+        return stakeholderrepo.findByDepartmentId(departmentId);
+    }
+
+    public String deleteStakeholder(int stakeholderId) {
+        String msg="";
+        if (stakeholderrepo.findById(stakeholderId) != null) {
+            stakeholderrepo.deleteById(stakeholderId);
+            msg = "Stakeholder "+stakeholderId+" is succesfully deleted!";
+        } else 
+            msg = "Stakeholder "+stakeholderId+" does not exist!";
+            return msg;
+    } 
+    
+    public StakeholderEntity editStakeholderEntity(int id, StakeholderEntity stakeholderEntity) {
+        // Find the existing financial entity by its ID
+        StakeholderEntity existingEntity = stakeholderrepo.findById(id)
+            .orElseThrow(() -> new NoSuchElementException("Stakeholder entity not found with id: " + id));
+
+        existingEntity.setOffice_target(stakeholderEntity.getOffice_target());
+        existingEntity.setDepartment(stakeholderEntity.getDepartment());
+    
+        // Save the updated entity to the database
+        return stakeholderrepo.save(existingEntity);
+    }
+    
+
+    public LearningEntity insertLearning (LearningEntity request) {
+        DepartmentEntity department = departmentrepo.findById(request.getDepartment().getId()).orElseThrow(() -> new NoSuchElementException("Department not found"));
+        request.setDepartment(department);
+        return learningrepo.save(request);
+    }
+
+    public List<LearningEntity> getLearningByDepartmentId(int departmentId) {
+        return learningrepo.findByDepartmentId(departmentId);
+    } 
+
+    public LearningEntity editLearningEntity(int id, LearningEntity learningEntity) {
+        // Find the existing financial entity by its ID
+        LearningEntity existingEntity = learningrepo.findById(id)
+            .orElseThrow(() -> new NoSuchElementException("Learning entity not found with id: " + id));
+
+        existingEntity.setOffice_target(learningEntity.getOffice_target());
+        existingEntity.setDepartment(learningEntity.getDepartment());
+    
+        // Save the updated entity to the database
+        return learningrepo.save(existingEntity);
+    }
+
+    public String deleteLearning(int learningId) {
+        String msg="";
+        if (learningrepo.findById(learningId) != null) {
+            learningrepo.deleteById(learningId);
+            msg = "Learning "+learningId+" is succesfully deleted!";
+        } else 
+            msg = "Learning "+learningId+" does not exist!";
+            return msg;
+    } 
+
+    public InternalEntity insertInternal (InternalEntity request) {
+        DepartmentEntity department = departmentrepo.findById(request.getDepartment().getId()).orElseThrow(() -> new NoSuchElementException("Department not found"));
+        request.setDepartment(department);
+        return internalrepo.save(request);
+    }
+
+    public List<InternalEntity> getInternalByDepartmentId(int departmentId) {
+        return internalrepo.findByDepartmentId(departmentId);
+    }
+   
+    
+    public InternalEntity editInternalEntity(int id, InternalEntity internalEntity) {
+        // Find the existing financial entity by its ID
+        InternalEntity existingEntity = internalrepo.findById(id)
+            .orElseThrow(() -> new NoSuchElementException("Internal entity not found with id: " + id));
+
+        existingEntity.setOffice_target(internalEntity.getOffice_target());
+        existingEntity.setDepartment(internalEntity.getDepartment());
+    
+        // Save the updated entity to the database
+        return internalrepo.save(existingEntity);
+    }
+    
+    public String deleteInternal(int internalId) {
+        String msg="";
+        if (internalrepo.findById(internalId) != null) {
+            internalrepo.deleteById(internalId);
+            msg = "Learning "+internalId+" is succesfully deleted!";
+        } else 
+            msg = "Learning "+internalId+" does not exist!";
+            return msg;
+    } 
 
 
     

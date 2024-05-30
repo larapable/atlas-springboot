@@ -51,8 +51,7 @@ public class GoalService {
                 return goalrepo.save(goal);
         }
 
-        return goalrepo.save(goal);
     }
     
     
-}
+
