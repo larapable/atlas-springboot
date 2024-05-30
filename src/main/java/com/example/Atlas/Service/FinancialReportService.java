@@ -52,19 +52,25 @@ public class FinancialReportService {
         }
     }
 
-    // Update a financial report by id
-    public FinancialReportEntity updateFinancialReport(int id, FinancialReportEntity request) {
-        Optional<FinancialReportEntity> optionalReport = financialReportRepo.findById(id);
-        if (optionalReport.isPresent()) {
-            FinancialReportEntity report = optionalReport.get();
-            report.setTitle(request.getTitle());
-            report.setDescription(request.getDescription());
-            report.setDateCreated(request.getDateCreated());
-            report.setDepartment(request.getDepartment());
-            report.setObjectives(request.getObjectives());
-            return financialReportRepo.save(report);
-        } else {
-            throw new NoSuchElementException("Financial Report Id " + id + " does not exist!");
+    // Update an existing financial report
+    public FinancialReportEntity updateFinancialReport(int reportId, FinancialReportEntity updatedReport) {
+        try {
+            // Fetch the existing financial report entity by its ID
+            FinancialReportEntity existingReport = financialReportRepo.findById(reportId)
+                    .orElseThrow(() -> new NoSuchElementException("Financial report not found for id: " + reportId));
+
+            // Update the fields of the existing report with the values from the updated
+            // report
+            existingReport.setTitle(updatedReport.getTitle());
+            existingReport.setDescription(updatedReport.getDescription());
+            existingReport.setObjectives(updatedReport.getObjectives());
+
+            // Save and return the updated financial report entity
+            return financialReportRepo.save(existingReport);
+        } catch (Exception e) {
+            e.printStackTrace();
+            // You may choose to handle the exception differently or rethrow it
+            throw new RuntimeException("Failed to update financial report.", e);
         }
     }
 
@@ -72,10 +78,14 @@ public class FinancialReportService {
     public String deleteFinancialReport(int id) {
         Optional<FinancialReportEntity> optionalReport = financialReportRepo.findById(id);
         if (optionalReport.isPresent()) {
+            FinancialReportEntity report = optionalReport.get();
+            // Remove objectives if needed
+            report.removeObjectives(report.getObjectives());
             financialReportRepo.deleteById(id);
             return "Financial Report Id " + id + " has been deleted!";
         } else {
             return "Financial Report Id " + id + " does not exist!";
         }
     }
+
 }

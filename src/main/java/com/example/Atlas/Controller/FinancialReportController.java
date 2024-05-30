@@ -20,6 +20,7 @@ public class FinancialReportController {
     @Autowired
     FinancialReportService financialReportService;
 
+    // Insert a financial report
     @PostMapping("/insertFinancialReport/{departmentId}")
     public ResponseEntity<?> insertFinancialReport(@PathVariable int departmentId,
             @RequestBody FinancialReportEntity request) {

@@ -8,13 +8,9 @@ import org.springframework.stereotype.Service;
 
 import com.example.Atlas.Entity.DepartmentEntity;
 import com.example.Atlas.Entity.FinancialEntity;
-import com.example.Atlas.Entity.GoalEntity;
-import com.example.Atlas.Entity.StrengthEntity;
 import com.example.Atlas.Repository.DepartmentRepository;
 import com.example.Atlas.Repository.FinancialRepository;
-import com.example.Atlas.Repository.InternalRepository;
-import com.example.Atlas.Repository.LearningRepository;
-import com.example.Atlas.Repository.StakeholderRepository;
+
 
 @Service
 public class BscService {

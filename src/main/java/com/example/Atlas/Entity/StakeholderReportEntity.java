@@ -15,9 +15,8 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 @Entity
-@Table(name = "financial_report")
-public class FinancialReportEntity {
-
+@Table(name = "stakeholder_report")
+public class StakeholderReportEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
@@ -35,14 +34,16 @@ public class FinancialReportEntity {
     private DepartmentEntity department;
 
     @ElementCollection
-    @CollectionTable(name = "financial_report_objectives", joinColumns = @JoinColumn(name = "report_id"))
+    @CollectionTable(name = "stakeholder_report_objectives", joinColumns = @JoinColumn(name = "report_id"))
     @Column(name = "objective")
     private List<String> objectives;
 
-    public FinancialReportEntity() {
+    public StakeholderReportEntity() {
+        // Default constructor
     }
 
-    public FinancialReportEntity(String title, String description, LocalDate dateCreated, DepartmentEntity department,
+    // Constructor with parameters
+    public StakeholderReportEntity(String title, String description, LocalDate dateCreated, DepartmentEntity department,
             List<String> objectives) {
         this.title = title;
         this.description = description;
