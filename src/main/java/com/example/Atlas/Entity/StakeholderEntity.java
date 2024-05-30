@@ -99,7 +99,7 @@ public class StakeholderEntity {
         return target_performance;
     }
 
-    public void setTarget_Performance(Float target_performance) {
+    public void setTarget_performance(Float target_performance) {
         this.target_performance = target_performance;
     }
 
@@ -107,7 +107,7 @@ public class StakeholderEntity {
         return actual_performance;
     }
 
-    public void setActual_Performance(Float actual_performance) {
+    public void setActual_performance(Float actual_performance) {
         this.actual_performance = actual_performance;
     }
 
