@@ -1,6 +1,5 @@
 package com.example.Atlas.Service;
 
-
 import java.util.List;
 import java.util.Optional;
 
@@ -11,42 +10,39 @@ import org.springframework.stereotype.Service;
 import com.example.Atlas.Entity.DepartmentEntity;
 import com.example.Atlas.Repository.DepartmentRepository;
 
-
-
-
 @Service
 public class DepartmentService {
     @Autowired
     DepartmentRepository departmentrepo;
-       
-    //Post department
-      public DepartmentEntity department_register(DepartmentEntity department) {
+
+    // Post department
+    public DepartmentEntity department_register(DepartmentEntity department) {
         try {
             return departmentrepo.save(department);
         } catch (DataIntegrityViolationException e) {
             throw new RuntimeException("Department already exists with the provided details!");
         }
     }
-    // Read / display all the department details of the table 
+
+    // Read / display all the department details of the table
     public List<DepartmentEntity> getAllDepartment() {
         return departmentrepo.findAll();
     }
 
-    
     // Get department by ID
     public DepartmentEntity getDepartmentById(int id) {
         Optional<DepartmentEntity> departmentOptional = departmentrepo.findById(id);
         return departmentOptional.orElse(null);
     }
 
-     public boolean updateDepartmentDetails(
+    public boolean updateDepartmentDetails(
             int id,
             String head_officer,
             String department_landline,
             String location,
             String university,
             String description
-           
+
     ) {
         try {
             // Get the department entity by ID
@@ -68,9 +64,5 @@ public class DepartmentService {
             throw new RuntimeException("An error occurred while updating department details.", e);
         }
     }
-
-
-
-
 
 }
