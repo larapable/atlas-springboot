@@ -9,7 +9,9 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.NoSuchElementException;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -181,4 +183,35 @@ public class BscController {
         }
     }
 
+    @GetMapping("/financialBscCount")
+    public Map<String, Integer> getFinancialCount() {
+        Map<String, Integer> response = new HashMap<>();
+        int count = bscserv.getFinancialCount();
+        response.put("count", count);
+        return response;
+    }
+
+    @GetMapping("/stakeholderBscCount")
+    public Map<String, Integer> getStakeholderCount() {
+        Map<String, Integer> response = new HashMap<>();
+        int count = bscserv.getStakeholderCount();
+        response.put("count", count);
+        return response;
+    }
+
+    @GetMapping("/learningBscCount")
+    public Map<String, Integer> getLearningCount() {
+        Map<String, Integer> response = new HashMap<>();
+        int count = bscserv.getLearningCount();
+        response.put("count", count);
+        return response;
+    }
+
+    @GetMapping("/internalBscCount")
+    public Map<String, Integer> getInternalCount() {
+        Map<String, Integer> response = new HashMap<>();
+        int count = bscserv.getInternalCount();
+        response.put("count", count);
+        return response;
+    }
 }

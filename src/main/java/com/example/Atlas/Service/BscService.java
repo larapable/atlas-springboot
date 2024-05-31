@@ -161,4 +161,21 @@ public class BscService {
             throw new NoSuchElementException("Internal scorecard not found with ID: " + request.getId());
         }
     }
+
+    public int getFinancialCount() {
+        return (int) financialrepo.count();
+    }
+
+    public int getStakeholderCount() {
+        return (int) stakeholderrepo.count();
+    }
+
+    public int getLearningCount() {
+        return (int) learningrepo.count();
+    }
+
+    public int getInternalCount() {
+        return (int) internalrepo.count();
+    }
+
 }

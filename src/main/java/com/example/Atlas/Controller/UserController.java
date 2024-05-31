@@ -9,9 +9,10 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-
 import java.util.Map;
 import java.util.HashMap;
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import com.example.Atlas.Entity.UserEntity;
 import com.example.Atlas.Service.UserService;
@@ -48,12 +49,21 @@ public class UserController {
         return userserv.getUserByUsername(username);
     }
 
-  
     @PutMapping("/update/{username}")
     public String updateUser(@PathVariable String username) {
         return userserv.updateUserGeneratedAiStrats(username);
     }
-  
-    
-   
+
+    @GetMapping("/userCount")
+    public Map<String, Integer> getUserCount() {
+        Map<String, Integer> response = new HashMap<>();
+        Integer userCount = userserv.getUserCount();
+        response.put("userCount", userCount);
+        return response;
+    }
+
+    @GetMapping("/getAllUsers")
+    public List<UserEntity> getAllUsers() {
+        return userserv.getAllUsers();
+    }
 }

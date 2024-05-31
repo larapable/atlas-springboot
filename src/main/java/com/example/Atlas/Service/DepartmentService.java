@@ -35,6 +35,10 @@ public class DepartmentService {
         return departmentOptional.orElse(null);
     }
 
+    public int getDepartmentCount() {
+        return (int) departmentrepo.count();
+    }
+
     public boolean updateDepartmentDetails(
             int id,
             String head_officer,
