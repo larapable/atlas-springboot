@@ -76,7 +76,7 @@ public class FinancialReportController {
     }
 
     // Get financial reports by department ID
-    @GetMapping("/getFinancialReportByDepartmentId")
+    @GetMapping("/getFinancialReportByDepartmentId/{departmentId}")
     public ResponseEntity<List<FinancialReportEntity>> getFinancialReportsByDepartmentId(
             @RequestParam int departmentId) {
         try {

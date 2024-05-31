@@ -18,7 +18,6 @@ import com.example.Atlas.Repository.LearningRepository;
 import com.example.Atlas.Repository.StakeholderRepository;
 import com.example.Atlas.Repository.InternalRepository;
 
-
 @Service
 public class BscService {
     @Autowired
@@ -26,7 +25,7 @@ public class BscService {
 
     @Autowired
     StakeholderRepository stakeholderrepo;
-     
+
     @Autowired
     LearningRepository learningrepo;
 
@@ -67,9 +66,7 @@ public class BscService {
         }
     }
 
-
-    //Stakeholder
-
+    // Stakeholder
     public StakeholderEntity insertStakeholderBsc(StakeholderEntity request) {
         DepartmentEntity department = departmentrepo.findById(request.getDepartment().getId())
                 .orElseThrow(() -> new NoSuchElementException("Department not found"));
@@ -101,7 +98,7 @@ public class BscService {
         }
     }
 
-    //Learning
+    // Learning
     public LearningEntity insertLearningBsc(LearningEntity request) {
         DepartmentEntity department = departmentrepo.findById(request.getDepartment().getId())
                 .orElseThrow(() -> new NoSuchElementException("Department not found"));
@@ -113,7 +110,27 @@ public class BscService {
         return learningrepo.findByDepartmentId(departmentId);
     }
 
-    //Internal
+    public LearningEntity updateLearningBscById(int id, LearningEntity request) {
+        Optional<LearningEntity> optionalLearning = learningrepo.findById(request.getId());
+        if (optionalLearning.isPresent()) {
+            LearningEntity existingStakeholder = optionalLearning.get();
+            existingStakeholder.setTarget_code(request.getTarget_code());
+            existingStakeholder.setOffice_target(request.getOffice_target());
+            existingStakeholder.setStartDate(request.getStartDate());
+            existingStakeholder.setCompletionDate(request.getCompletionDate());
+            existingStakeholder.setStatus(request.getStatus());
+            existingStakeholder.setKey_performance_indicator(request.getKey_performance_indicator());
+            existingStakeholder.setTarget_performance(request.getTarget_performance());
+            existingStakeholder.setActual_performance(request.getActual_performance());
+            // Assuming Department is an entity, handle it accordingly
+            // existingFinancial.setDepartment(request.getDepartment());
+            return learningrepo.save(existingStakeholder);
+        } else {
+            throw new NoSuchElementException("Learning scorecard not found with ID: " + request.getId());
+        }
+    }
+
+    // Internal
     public InternalEntity insertInternalBsc(InternalEntity request) {
         DepartmentEntity department = departmentrepo.findById(request.getDepartment().getId())
                 .orElseThrow(() -> new NoSuchElementException("Department not found"));
@@ -125,6 +142,23 @@ public class BscService {
         return internalrepo.findByDepartmentId(departmentId);
     }
 
-   
-
+    public InternalEntity updateInternalBscById(int id, InternalEntity request) {
+        Optional<InternalEntity> optionInternal = internalrepo.findById(request.getId());
+        if (optionInternal.isPresent()) {
+            InternalEntity existingStakeholder = optionInternal.get();
+            existingStakeholder.setTarget_code(request.getTarget_code());
+            existingStakeholder.setOffice_target(request.getOffice_target());
+            existingStakeholder.setStartDate(request.getStartDate());
+            existingStakeholder.setCompletionDate(request.getCompletionDate());
+            existingStakeholder.setStatus(request.getStatus());
+            existingStakeholder.setKey_performance_indicator(request.getKey_performance_indicator());
+            existingStakeholder.setTarget_performance(request.getTarget_performance());
+            existingStakeholder.setActual_performance(request.getActual_performance());
+            // Assuming Department is an entity, handle it accordingly
+            // existingFinancial.setDepartment(request.getDepartment());
+            return internalrepo.save(existingStakeholder);
+        } else {
+            throw new NoSuchElementException("Internal scorecard not found with ID: " + request.getId());
+        }
+    }
 }
