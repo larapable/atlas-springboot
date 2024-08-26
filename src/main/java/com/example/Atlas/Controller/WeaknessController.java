@@ -37,11 +37,7 @@ public class WeaknessController {
     public ResponseEntity<?> getWeaknessByDepartmentId(@PathVariable int departmentId) {
         try {
             List<WeaknessEntity> weakness = weaknessserv.getWeaknessByDepartmentId(departmentId);
-            if (weakness != null && !weakness.isEmpty()) {
                 return ResponseEntity.ok(weakness);
-            } else {
-                return ResponseEntity.status(HttpStatus.NOT_FOUND).body("No weakness found for department id " + departmentId);
-            }
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error: " + e.getMessage());
         }
@@ -72,8 +68,29 @@ public class WeaknessController {
                     .body("Failed to delete weakness: " + e.getMessage());
         }
     }
-    
 
-   
+     // added
+    @GetMapping("/deleted/{departmentId}")
+    public ResponseEntity<?> getDeletedWeaknesses(@PathVariable int departmentId) {
+        try {
+            List<WeaknessEntity> deletedWeakness = weaknessserv.getDeletedWeaknesses(departmentId);
+            return ResponseEntity.ok(deletedWeakness);
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error: " + e.getMessage());
+        }
+    }
+
+    @PutMapping("/restore/{id}")
+    public ResponseEntity<?> restoreWeakness(@PathVariable int id) {
+        try {
+            WeaknessEntity restoredWeakness = weaknessserv.restoreWeakness(id);
+            return ResponseEntity.ok(restoredWeakness);
+        } catch (NoSuchElementException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Error: " + e.getMessage());
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error: " + e.getMessage());
+        }
+    }
+
     
 }

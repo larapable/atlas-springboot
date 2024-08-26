@@ -1,5 +1,6 @@
 package com.example.Atlas.Service;
 
+import java.util.List;
 import java.util.NoSuchElementException;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,49 +10,78 @@ import com.example.Atlas.Entity.DepartmentEntity;
 import com.example.Atlas.Entity.GoalEntity;
 import com.example.Atlas.Repository.DepartmentRepository;
 import com.example.Atlas.Repository.GoalRepository;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 public class GoalService {
-        @Autowired
-        GoalRepository goalrepo;
 
         @Autowired
-        DepartmentRepository departmentrepo;
+        GoalRepository goalRepository;
 
-        public GoalEntity insertGoal(GoalEntity request) {
-                DepartmentEntity department = departmentrepo.findById(request.getDepartment().getId())
+        @Autowired
+        DepartmentRepository departmentRepository;
+
+        public List<GoalEntity> getAllGoalsByDepartmentId(int departmentId) {
+                DepartmentEntity department = departmentRepository.findById(departmentId)
                                 .orElseThrow(() -> new NoSuchElementException("Department not found"));
-                request.setDepartment(department);
-                return goalrepo.save(request);
+                return goalRepository.findAllByDepartmentId(department.getId());
         }
 
         public GoalEntity getLatestGoalsByDepartmentId(int departmentId) {
-                DepartmentEntity department = departmentrepo.findById(departmentId)
+                DepartmentEntity department = departmentRepository.findById(departmentId)
                                 .orElseThrow(() -> new NoSuchElementException("Department not found"));
-                return goalrepo.findTopByDepartmentIdOrderByIdDesc(department.getId())
+                return goalRepository.findTopByDepartmentIdOrderByIdDesc(department.getId())
                                 .orElseThrow(() -> new NoSuchElementException(
                                                 "No goals found for department id " + departmentId));
         }
 
-        public GoalEntity updateGoalsById(GoalEntity request) {
-                DepartmentEntity department = departmentrepo.findById(request.getDepartment().getId())
-                                .orElseThrow(() -> new NoSuchElementException("Department not found"));
-                GoalEntity goal = goalrepo.findById(department.getId())
-                                .orElseThrow(() -> new NoSuchElementException(
-                                                "Goal not found with id " + department.getId()));
-
-                goal.setVision(request.getVision());
-                goal.setProposition(request.getProposition());
-                goal.setGoals(request.getGoals());
-                goal.setGoals2(request.getGoals2());
-                goal.setGoals3(request.getGoals3());
-                goal.setStartDate(request.getStartDate());
-                goal.setEndDate(request.getEndDate());
-
-                return goalrepo.save(goal);
+        @Transactional(readOnly = true)
+        public GoalEntity getLatestGoal() {
+                return goalRepository.findFirstByAccomplishedOrderByIdDesc(false)
+                                .orElseThrow(() -> new NoSuchElementException("No goals found"));
         }
 
-    }
-    
-    
+        public GoalEntity insertGoal(GoalEntity request) {
+                DepartmentEntity department = departmentRepository.findById(request.getDepartment().getId())
+                                .orElseThrow(() -> new NoSuchElementException("Department not found"));
+                request.setDepartment(department);
+                return goalRepository.save(request); // ID will be auto-generated
+        }
 
+        public GoalEntity getGoalById(int goalId) {
+                return goalRepository.findById(goalId)
+                                .orElseThrow(() -> new NoSuchElementException("Goal not found with id " + goalId));
+        }
+
+        public GoalEntity updateGoalById(int goalId, GoalEntity request) {
+                GoalEntity existingGoal = goalRepository.findById(goalId)
+                                .orElseThrow(() -> new NoSuchElementException("Goal not found with id " + goalId));
+                DepartmentEntity department = departmentRepository.findById(request.getDepartment().getId())
+                                .orElseThrow(() -> new NoSuchElementException("Department not found"));
+
+                existingGoal.setVision(request.getVision());
+                existingGoal.setProposition(request.getProposition());
+                existingGoal.setMission(request.getMission());
+                existingGoal.setGoals(request.getGoals());
+                existingGoal.setGoals2(request.getGoals2());
+                existingGoal.setGoals3(request.getGoals3());
+                existingGoal.setTargetYear(request.getTargetYear());
+                existingGoal.setDepartment(department);
+
+                return goalRepository.save(existingGoal); // Save and return the updated goal
+        }
+
+        @Transactional
+        public void updateAccomplishedStatus(Integer id, boolean accomplished) {
+                GoalEntity goal = goalRepository.findById(id)
+                                .orElseThrow(() -> new NoSuchElementException("Goal not found with id " + id));
+                goal.setAccomplished(accomplished);
+                goalRepository.save(goal); // Ensure this save operation persists the update
+        }
+
+        public List<GoalEntity> getAccomplishedGoalsByDepartmentId(int departmentId) {
+                DepartmentEntity department = departmentRepository.findById(departmentId)
+                                .orElseThrow(() -> new NoSuchElementException("Department not found"));
+                return goalRepository.findAllByDepartmentIdAndAccomplished(department.getId(), true);
+        }
+}

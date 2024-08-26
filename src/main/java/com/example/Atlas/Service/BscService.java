@@ -18,7 +18,6 @@ import com.example.Atlas.Repository.LearningRepository;
 import com.example.Atlas.Repository.StakeholderRepository;
 import com.example.Atlas.Repository.InternalRepository;
 
-
 @Service
 public class BscService {
     @Autowired
@@ -26,7 +25,7 @@ public class BscService {
 
     @Autowired
     StakeholderRepository stakeholderrepo;
-     
+
     @Autowired
     LearningRepository learningrepo;
 
@@ -48,28 +47,44 @@ public class BscService {
     }
 
     public FinancialEntity updateFinancialBscById(int id, FinancialEntity request) {
-        Optional<FinancialEntity> optionalFinancial = financialrepo.findById(request.getId());
+        Optional<FinancialEntity> optionalFinancial = financialrepo.findById(id);
         if (optionalFinancial.isPresent()) {
             FinancialEntity existingFinancial = optionalFinancial.get();
-            existingFinancial.setTarget_code(request.getTarget_code());
-            existingFinancial.setOffice_target(request.getOffice_target());
-            existingFinancial.setStartDate(request.getStartDate());
-            existingFinancial.setCompletionDate(request.getCompletionDate());
-            existingFinancial.setStatus(request.getStatus());
-            existingFinancial.setKey_performance_indicator(request.getKey_performance_indicator());
-            existingFinancial.setTarget_performance(request.getTarget_performance());
-            existingFinancial.setActual_performance(request.getActual_performance());
-            // Assuming Department is an entity, handle it accordingly
-            // existingFinancial.setDepartment(request.getDepartment());
+            // Update fields based on request
+            if (request.getTarget_code() != null)
+                existingFinancial.setTarget_code(request.getTarget_code());
+            if (request.getOffice_target() != null)
+                existingFinancial.setOffice_target(request.getOffice_target());
+            if (request.getStartDate() != null)
+                existingFinancial.setStartDate(request.getStartDate());
+            if (request.getCompletionDate() != null)
+                existingFinancial.setCompletionDate(request.getCompletionDate());
+            if (request.getStatus() != null)
+                existingFinancial.setStatus(request.getStatus());
+            if (request.getKey_performance_indicator() != null)
+                existingFinancial.setKey_performance_indicator(request.getKey_performance_indicator());
+            if (request.getTarget_performance() != null)
+                existingFinancial.setTarget_performance(request.getTarget_performance());
+            if (request.getActual_performance() != null)
+                existingFinancial.setActual_performance(request.getActual_performance());
+            if (request.getSemester() != null)
+                existingFinancial.setSemester(request.getSemester());
+            if (request.getBudget() != null)
+                existingFinancial.setBudget(request.getBudget());
+            if (request.getIncharge() != null)
+                existingFinancial.setIncharge(request.getIncharge());
+            if (request.getOfi() != null)
+                existingFinancial.setOfi(request.getOfi());
+            if (request.getActions() != null)
+                existingFinancial.setActions(request.getActions());
+            // Department may not be updated
             return financialrepo.save(existingFinancial);
         } else {
-            throw new NoSuchElementException("Financial scorecard not found with ID: " + request.getId());
+            throw new NoSuchElementException("Financial scorecard not found with ID: " + id);
         }
     }
 
-
-    //Stakeholder
-
+    // Stakeholder
     public StakeholderEntity insertStakeholderBsc(StakeholderEntity request) {
         DepartmentEntity department = departmentrepo.findById(request.getDepartment().getId())
                 .orElseThrow(() -> new NoSuchElementException("Department not found"));
@@ -85,23 +100,39 @@ public class BscService {
         Optional<StakeholderEntity> optionalStakeholder = stakeholderrepo.findById(request.getId());
         if (optionalStakeholder.isPresent()) {
             StakeholderEntity existingStakeholder = optionalStakeholder.get();
-            existingStakeholder.setTarget_code(request.getTarget_code());
-            existingStakeholder.setOffice_target(request.getOffice_target());
-            existingStakeholder.setStartDate(request.getStartDate());
-            existingStakeholder.setCompletionDate(request.getCompletionDate());
-            existingStakeholder.setStatus(request.getStatus());
-            existingStakeholder.setKey_performance_indicator(request.getKey_performance_indicator());
-            existingStakeholder.setTarget_performance(request.getTarget_performance());
-            existingStakeholder.setActual_performance(request.getActual_performance());
-            // Assuming Department is an entity, handle it accordingly
-            // existingFinancial.setDepartment(request.getDepartment());
+            if (request.getTarget_code() != null)
+                existingStakeholder.setTarget_code(request.getTarget_code());
+            if (request.getOffice_target() != null)
+                existingStakeholder.setOffice_target(request.getOffice_target());
+            if (request.getStartDate() != null)
+                existingStakeholder.setStartDate(request.getStartDate());
+            if (request.getCompletionDate() != null)
+                existingStakeholder.setCompletionDate(request.getCompletionDate());
+            if (request.getStatus() != null)
+                existingStakeholder.setStatus(request.getStatus());
+            if (request.getKey_performance_indicator() != null)
+                existingStakeholder.setKey_performance_indicator(request.getKey_performance_indicator());
+            if (request.getTarget_performance() != null)
+                existingStakeholder.setTarget_performance(request.getTarget_performance());
+            if (request.getActual_performance() != null)
+                existingStakeholder.setActual_performance(request.getActual_performance());
+            if (request.getSemester() != null)
+                existingStakeholder.setSemester(request.getSemester());
+            if (request.getActions() != null)
+                existingStakeholder.setActions(request.getActions());
+            if (request.getBudget() != null)
+                existingStakeholder.setBudget(request.getBudget());
+            if (request.getIncharge() != null)
+                existingStakeholder.setIncharge(request.getIncharge());
+            if (request.getOfi() != null)
+                existingStakeholder.setOfi(request.getOfi());
             return stakeholderrepo.save(existingStakeholder);
         } else {
             throw new NoSuchElementException("Stakeholder scorecard not found with ID: " + request.getId());
         }
     }
 
-    //Learning
+    // Learning
     public LearningEntity insertLearningBsc(LearningEntity request) {
         DepartmentEntity department = departmentrepo.findById(request.getDepartment().getId())
                 .orElseThrow(() -> new NoSuchElementException("Department not found"));
@@ -113,7 +144,43 @@ public class BscService {
         return learningrepo.findByDepartmentId(departmentId);
     }
 
-    //Internal
+    public LearningEntity updateLearningBscById(int id, LearningEntity request) {
+        Optional<LearningEntity> optionalLearning = learningrepo.findById(request.getId());
+        if (optionalLearning.isPresent()) {
+            LearningEntity existingStakeholder = optionalLearning.get();
+            if (request.getTarget_code() != null)
+                existingStakeholder.setTarget_code(request.getTarget_code());
+            if (request.getOffice_target() != null)
+                existingStakeholder.setOffice_target(request.getOffice_target());
+            if (request.getStartDate() != null)
+                existingStakeholder.setStartDate(request.getStartDate());
+            if (request.getCompletionDate() != null)
+                existingStakeholder.setCompletionDate(request.getCompletionDate());
+            if (request.getStatus() != null)
+                existingStakeholder.setStatus(request.getStatus());
+            if (request.getKey_performance_indicator() != null)
+                existingStakeholder.setKey_performance_indicator(request.getKey_performance_indicator());
+            if (request.getTarget_performance() != null)
+                existingStakeholder.setTarget_performance(request.getTarget_performance());
+            if (request.getActual_performance() != null)
+                existingStakeholder.setActual_performance(request.getActual_performance());
+            if (request.getSemester() != null)
+                existingStakeholder.setSemester(request.getSemester());
+            if (request.getActions() != null)
+                existingStakeholder.setActions(request.getActions());
+            if (request.getBudget() != null)
+                existingStakeholder.setBudget(request.getBudget());
+            if (request.getIncharge() != null)
+                existingStakeholder.setIncharge(request.getIncharge());
+            if (request.getOfi() != null)
+                existingStakeholder.setOfi(request.getOfi());
+            return learningrepo.save(existingStakeholder);
+        } else {
+            throw new NoSuchElementException("Learning scorecard not found with ID: " + request.getId());
+        }
+    }
+
+    // Internal
     public InternalEntity insertInternalBsc(InternalEntity request) {
         DepartmentEntity department = departmentrepo.findById(request.getDepartment().getId())
                 .orElseThrow(() -> new NoSuchElementException("Department not found"));
@@ -125,6 +192,56 @@ public class BscService {
         return internalrepo.findByDepartmentId(departmentId);
     }
 
-   
+    public InternalEntity updateInternalBscById(int id, InternalEntity request) {
+        Optional<InternalEntity> optionInternal = internalrepo.findById(request.getId());
+        if (optionInternal.isPresent()) {
+            InternalEntity existingStakeholder = optionInternal.get();
+            if (request.getTarget_code() != null)
+                existingStakeholder.setTarget_code(request.getTarget_code());
+            if (request.getOffice_target() != null)
+                existingStakeholder.setOffice_target(request.getOffice_target());
+            if (request.getStartDate() != null)
+                existingStakeholder.setStartDate(request.getStartDate());
+            if (request.getCompletionDate() != null)
+                existingStakeholder.setCompletionDate(request.getCompletionDate());
+            if (request.getStatus() != null)
+                existingStakeholder.setStatus(request.getStatus());
+            if (request.getKey_performance_indicator() != null)
+                existingStakeholder.setKey_performance_indicator(request.getKey_performance_indicator());
+            if (request.getTarget_performance() != null)
+                existingStakeholder.setTarget_performance(request.getTarget_performance());
+            if (request.getActual_performance() != null)
+                existingStakeholder.setActual_performance(request.getActual_performance());
+            if (request.getSemester() != null)
+                existingStakeholder.setSemester(request.getSemester());
+            if (request.getActions() != null)
+                existingStakeholder.setActions(request.getActions());
+            if (request.getBudget() != null)
+                existingStakeholder.setBudget(request.getBudget());
+            if (request.getIncharge() != null)
+                existingStakeholder.setIncharge(request.getIncharge());
+            if (request.getOfi() != null)
+                existingStakeholder.setOfi(request.getOfi());
+            return internalrepo.save(existingStakeholder);
+        } else {
+            throw new NoSuchElementException("Internal scorecard not found with ID: " + request.getId());
+        }
+    }
+
+    public int getFinancialCount() {
+        return (int) financialrepo.count();
+    }
+
+    public int getStakeholderCount() {
+        return (int) stakeholderrepo.count();
+    }
+
+    public int getLearningCount() {
+        return (int) learningrepo.count();
+    }
+
+    public int getInternalCount() {
+        return (int) internalrepo.count();
+    }
 
 }

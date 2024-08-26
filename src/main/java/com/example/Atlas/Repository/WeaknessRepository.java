@@ -9,5 +9,6 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import com.example.Atlas.Entity.WeaknessEntity;
 public interface WeaknessRepository extends JpaRepository<WeaknessEntity, Integer>{
 
-    List<WeaknessEntity> findByDepartmentId(int departmentId);
+    List<WeaknessEntity> findByDepartmentIdAndIsDeleteFalse(int departmentId);
+    List<WeaknessEntity> findByDepartmentIdAndIsDeleteTrue(int departmentId);
 }

@@ -12,5 +12,7 @@ import com.example.Atlas.Entity.StrengthEntity;
 
 public interface StrengthRepository extends JpaRepository<StrengthEntity, Integer> {
 
-    List<StrengthEntity> findByDepartmentId(int departmentId);
+    List<StrengthEntity> findByDepartmentIdAndIsDeleteFalse(int departmentId);
+    List<StrengthEntity> findByDepartmentIdAndIsDeleteTrue(int departmentId);
+    
 }

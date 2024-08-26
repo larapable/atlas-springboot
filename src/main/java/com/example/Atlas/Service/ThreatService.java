@@ -27,7 +27,7 @@ public class ThreatService {
     }
 
     public List<ThreatEntity> getThreatsByDepartmentId(int departmentId) {
-        return threatrepo.findByDepartmentId(departmentId);
+        return threatrepo.findByDepartmentIdAndIsDeleteFalse(departmentId);
     }
 
      public ThreatEntity updateThreatById(ThreatEntity request) {
@@ -38,19 +38,37 @@ public class ThreatService {
             existingThreat.setDepartment(request.getDepartment());
             return threatrepo.save(existingThreat);
         } else {
-            throw new NoSuchElementException("Strength not found with ID: " + request.getId());
+            throw new NoSuchElementException("threat not found with ID: " + request.getId());
         }
     }
 
-    public String deleteThreat(int threatId) {
-        String msg="";
-        if (threatrepo.findById(threatId) != null) {
-            threatrepo.deleteById(threatId);
-            msg = "Threat "+threatId+" is succesfully deleted!";
-        } else 
-            msg = "Threat "+threatId+" does not exist!";
-            return msg;
-    } 
+      public String deleteThreat(int threatId) {
+        Optional<ThreatEntity> optionalThreat = threatrepo.findById(threatId);
+        if (optionalThreat.isPresent()) {
+            ThreatEntity threat = optionalThreat.get();
+            threat.setDelete(true);
+            threatrepo.save(threat);
+            return "Threat " + threatId + " is successfully marked as deleted!";
+        } else {
+            return "Threat " + threatId + " does not exist!";
+        }
+    }
+
+    // added
+    public List<ThreatEntity> getDeletedThreats(int departmentId) {
+        return threatrepo.findByDepartmentIdAndIsDeleteTrue(departmentId);
+    }
+
+    public ThreatEntity restoreThreat(int threatId) {
+        Optional<ThreatEntity> optionalThreats = threatrepo.findById(threatId);
+        if (optionalThreats.isPresent()) {
+            ThreatEntity Threats = optionalThreats.get();
+            Threats.setDelete(false);
+            return threatrepo.save(Threats);
+        } else {
+            throw new NoSuchElementException("Threats not found with ID: " + threatId);
+        }
+    }
 
 
 

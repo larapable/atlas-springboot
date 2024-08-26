@@ -29,7 +29,7 @@ public class WeaknessService {
     }
     
      public List<WeaknessEntity> getWeaknessByDepartmentId(int departmentId) {
-        return weaknessrepo.findByDepartmentId(departmentId);
+        return weaknessrepo.findByDepartmentIdAndIsDeleteFalse(departmentId);
     }
 
     public WeaknessEntity updateWeaknessById(WeaknessEntity request) {
@@ -44,15 +44,34 @@ public class WeaknessService {
         }
     }
 
-    public String deleteWeakness(int weaknessId) {
-        String msg="";
-        if (weaknessrepo.findById(weaknessId) != null) {
-            weaknessrepo.deleteById(weaknessId);
-            msg = "Weakness "+weaknessId+" is succesfully deleted!";
-        } else 
-            msg = "Weakness "+weaknessId+" does not exist!";
-            return msg;
-    } 
+
+     public String deleteWeakness(int weaknessId) {
+        Optional<WeaknessEntity> optionalWeakness = weaknessrepo.findById(weaknessId);
+        if (optionalWeakness.isPresent()) {
+            WeaknessEntity weakness = optionalWeakness.get();
+            weakness.setDelete(true);
+            weaknessrepo.save(weakness);
+            return "Weakness " + weaknessId + " is successfully marked as deleted!";
+        } else {
+            return "Weakness " + weaknessId + " does not exist!";
+        }
+    }
+
+    // added
+    public List<WeaknessEntity> getDeletedWeaknesses(int departmentId) {
+        return weaknessrepo.findByDepartmentIdAndIsDeleteTrue(departmentId);
+    }
+
+    public WeaknessEntity restoreWeakness(int weaknessId) {
+        Optional<WeaknessEntity> optionalWeakness = weaknessrepo.findById(weaknessId);
+        if (optionalWeakness.isPresent()) {
+            WeaknessEntity weakness = optionalWeakness.get();
+            weakness.setDelete(false);
+            return weaknessrepo.save(weakness);
+        } else {
+            throw new NoSuchElementException("Weakness not found with ID: " + weaknessId);
+        }
+    }
 
     
 }

@@ -28,7 +28,7 @@ public class OpportunityService {
     }
 
     public List<OpportunityEntity> getOpportunityByDepartmentId(int departmentId) {
-        return opportunityrepo.findByDepartmentId(departmentId);
+        return opportunityrepo.findByDepartmentIdAndIsDeleteFalse(departmentId);
     }
 
      public OpportunityEntity updateOpportunityById(OpportunityEntity request) {
@@ -44,13 +44,32 @@ public class OpportunityService {
     }
 
     public String deleteOpportunity(int opportunityId) {
-        String msg="";
-        if (opportunityrepo.findById(opportunityId) != null) {
-            opportunityrepo.deleteById(opportunityId);
-            msg = "Opportunity "+opportunityId+" is succesfully deleted!";
-        } else 
-            msg = "Opportunity "+opportunityId+" does not exist!";
-            return msg;
-    } 
+        Optional<OpportunityEntity> optionalOpportunity = opportunityrepo.findById(opportunityId);
+        if (optionalOpportunity.isPresent()) {
+            OpportunityEntity opportunity = optionalOpportunity.get();
+            opportunity.setDelete(true);
+            opportunityrepo.save(opportunity);
+            return "Opportunity " + opportunityId + " is successfully marked as deleted!";
+        } else {
+            return "Opportunity " + opportunityId + " does not exist!";
+        }
+    }
+
+    // added
+    public List<OpportunityEntity> getDeletedOpportunities(int departmentId) {
+        return opportunityrepo.findByDepartmentIdAndIsDeleteTrue(departmentId);
+    }
+
+    public OpportunityEntity restoreOpportunity(int opportunityId) {
+        Optional<OpportunityEntity> optionalOpportunity = opportunityrepo.findById(opportunityId);
+        if (optionalOpportunity.isPresent()) {
+            OpportunityEntity opportunity = optionalOpportunity.get();
+            opportunity.setDelete(false);
+            return opportunityrepo.save(opportunity);
+        } else {
+            throw new NoSuchElementException("Opportunity not found with ID: " + opportunityId);
+        }
+    }
+
     
 }

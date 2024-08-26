@@ -9,13 +9,14 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.NoSuchElementException;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-
 import com.example.Atlas.Entity.FinancialEntity;
 import com.example.Atlas.Entity.InternalEntity;
 import com.example.Atlas.Entity.LearningEntity;
@@ -23,10 +24,9 @@ import com.example.Atlas.Entity.StakeholderEntity;
 import com.example.Atlas.Repository.DepartmentRepository;
 import com.example.Atlas.Service.BscService;
 
-
 @RestController
 @RequestMapping("/bsc")
-@CrossOrigin()
+@CrossOrigin(origins = "http://localhost:3000")
 public class BscController {
     @Autowired
     BscService bscserv;
@@ -39,7 +39,6 @@ public class BscController {
         return bscserv.insertFinancialBsc(financial);
     }
 
-    
     @GetMapping("financial/get/{departmentId}")
     public ResponseEntity<?> getFinancialByDepartmentId(@PathVariable int departmentId) {
         try {
@@ -47,18 +46,18 @@ public class BscController {
             if (financial != null && !financial.isEmpty()) {
                 return ResponseEntity.ok(financial);
             } else {
-                return ResponseEntity.status(HttpStatus.NOT_FOUND).body("No financial found for department id " + departmentId);
+                return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                        .body("No financial found for department id " + departmentId);
             }
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error: " + e.getMessage());
         }
     }
 
-    
     @PutMapping("/financial/update/{id}")
-    public ResponseEntity<FinancialEntity> updateFinancialBsc(@PathVariable int id, @RequestBody FinancialEntity request) {
+    public ResponseEntity<FinancialEntity> updateFinancialBsc(@PathVariable int id,
+            @RequestBody FinancialEntity request) {
         try {
-            request.setId(id); // Ensure the ID from the path variable is set in the request entity
             FinancialEntity updatedFinancial = bscserv.updateFinancialBscById(id, request);
             return ResponseEntity.ok(updatedFinancial);
         } catch (NoSuchElementException e) {
@@ -67,9 +66,8 @@ public class BscController {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
         }
     }
-    
 
-    //Stakeholder
+    // Stakeholder
     @PostMapping("/stakeholderBsc/insert")
     public StakeholderEntity insertStakeholderBsc(@RequestBody StakeholderEntity stakeholder) {
         return bscserv.insertStakeholderBsc(stakeholder);
@@ -82,17 +80,18 @@ public class BscController {
             if (stakeholder != null && !stakeholder.isEmpty()) {
                 return ResponseEntity.ok(stakeholder);
             } else {
-                return ResponseEntity.status(HttpStatus.NOT_FOUND).body("No stakeholder found for department id " + departmentId);
+                return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                        .body("No stakeholder found for department id " + departmentId);
             }
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error: " + e.getMessage());
         }
     }
-    
+
     @PutMapping("/stakeholder/update/{id}")
-    public ResponseEntity<StakeholderEntity> updateStakeholderBscById(@PathVariable int id, @RequestBody StakeholderEntity request) {
+    public ResponseEntity<StakeholderEntity> updateStakeholderBsc(@PathVariable int id,
+            @RequestBody StakeholderEntity request) {
         try {
-            request.setId(id); // Ensure the ID from the path variable is set in the request entity
             StakeholderEntity updatedStakeholder = bscserv.updateStakeholderBscById(id, request);
             return ResponseEntity.ok(updatedStakeholder);
         } catch (NoSuchElementException e) {
@@ -102,13 +101,12 @@ public class BscController {
         }
     }
 
-    //Learning
+    // Learning
     @PostMapping("/learningBsc/insert")
     public LearningEntity insertlearningBsc(@RequestBody LearningEntity learning) {
         return bscserv.insertLearningBsc(learning);
     }
 
-    
     @GetMapping("learning/get/{departmentId}")
     public ResponseEntity<?> getLearningByDepartmentId(@PathVariable int departmentId) {
         try {
@@ -116,20 +114,33 @@ public class BscController {
             if (learning != null && !learning.isEmpty()) {
                 return ResponseEntity.ok(learning);
             } else {
-                return ResponseEntity.status(HttpStatus.NOT_FOUND).body("No learning found for department id " + departmentId);
+                return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                        .body("No learning found for department id " + departmentId);
             }
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error: " + e.getMessage());
         }
     }
 
-    //Intenal
+    @PutMapping("/learning/update/{id}")
+    public ResponseEntity<LearningEntity> updateLearningBsc(@PathVariable int id,
+            @RequestBody LearningEntity request) {
+        try {
+            LearningEntity updatedLearning = bscserv.updateLearningBscById(id, request);
+            return ResponseEntity.ok(updatedLearning);
+        } catch (NoSuchElementException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
+        }
+    }
+
+    // Intenal
     @PostMapping("/internalBsc/insert")
     public InternalEntity insertInternalBsc(@RequestBody InternalEntity internal) {
         return bscserv.insertInternalBsc(internal);
     }
 
-    
     @GetMapping("internal/get/{departmentId}")
     public ResponseEntity<?> getInternalByDepartmentId(@PathVariable int departmentId) {
         try {
@@ -137,14 +148,56 @@ public class BscController {
             if (internal != null && !internal.isEmpty()) {
                 return ResponseEntity.ok(internal);
             } else {
-                return ResponseEntity.status(HttpStatus.NOT_FOUND).body("No internal found for department id " + departmentId);
+                return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                        .body("No internal found for department id " + departmentId);
             }
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error: " + e.getMessage());
         }
     }
 
+    @PutMapping("/internal/update/{id}")
+    public ResponseEntity<InternalEntity> updateInternalBsc(@PathVariable int id,
+            @RequestBody InternalEntity request) {
+        try {
+            InternalEntity updatedInternal = bscserv.updateInternalBscById(id, request);
+            return ResponseEntity.ok(updatedInternal);
+        } catch (NoSuchElementException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
+        }
+    }
 
+    @GetMapping("/financialBscCount")
+    public Map<String, Integer> getFinancialCount() {
+        Map<String, Integer> response = new HashMap<>();
+        int count = bscserv.getFinancialCount();
+        response.put("count", count);
+        return response;
+    }
 
+    @GetMapping("/stakeholderBscCount")
+    public Map<String, Integer> getStakeholderCount() {
+        Map<String, Integer> response = new HashMap<>();
+        int count = bscserv.getStakeholderCount();
+        response.put("count", count);
+        return response;
+    }
 
+    @GetMapping("/learningBscCount")
+    public Map<String, Integer> getLearningCount() {
+        Map<String, Integer> response = new HashMap<>();
+        int count = bscserv.getLearningCount();
+        response.put("count", count);
+        return response;
+    }
+
+    @GetMapping("/internalBscCount")
+    public Map<String, Integer> getInternalCount() {
+        Map<String, Integer> response = new HashMap<>();
+        int count = bscserv.getInternalCount();
+        response.put("count", count);
+        return response;
+    }
 }

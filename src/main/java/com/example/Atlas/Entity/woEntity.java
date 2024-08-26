@@ -16,8 +16,8 @@ public class woEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
     
-    @Column(name = "w_oResponses")
-    private String w_oResponses;
+    @Column(name = "responses")
+    private String responses;
 
     @ManyToOne()
     @JoinColumn(name = "department_id") // Specify the foreign key column
@@ -35,11 +35,11 @@ public class woEntity {
 
     
     public String getW_oResponses() {
-        return w_oResponses;
+        return responses;
     }
 
     public void setW_oResponses(String w_oResponses) {
-        this.w_oResponses = w_oResponses;
+        this.responses = w_oResponses;
     }
 
      // Getters and setters for department

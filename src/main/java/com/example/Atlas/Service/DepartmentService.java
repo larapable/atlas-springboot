@@ -40,6 +40,7 @@ public class DepartmentService {
             String head_officer,
             String department_landline,
             String location,
+            String email,
             String university,
             String description
 
@@ -53,6 +54,7 @@ public class DepartmentService {
                 department.setHead_officer(head_officer);
                 department.setDepartment_landline(department_landline);
                 department.setLocation(location);
+                department.setEmail(email);
                 department.setUniversity(university);
                 department.setDescription(description);
                 departmentrepo.save(department);

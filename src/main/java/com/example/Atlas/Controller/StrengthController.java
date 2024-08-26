@@ -36,17 +36,12 @@ public class StrengthController {
     public ResponseEntity<?> getStrengthByDepartmentId(@PathVariable int departmentId) {
         try {
             List<StrengthEntity> strengths = strengthserv.getStrengthsByDepartmentId(departmentId);
-            if (strengths != null && !strengths.isEmpty()) {
-                return ResponseEntity.ok(strengths);
-            } else {
-                return ResponseEntity.status(HttpStatus.NOT_FOUND).body("No strengths found for department id " + departmentId);
-            }
-        } catch (Exception e) {
+                return ResponseEntity.ok(strengths);       
+	} catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error: " + e.getMessage());
         }
     }
     
-
 
     @PutMapping("/update/{departmentId}")
     public ResponseEntity<?> updateStrengthById(@PathVariable int departmentId, @RequestBody StrengthEntity request) {
@@ -61,7 +56,7 @@ public class StrengthController {
         }
     }
 
-       @DeleteMapping("/delete/{id}")
+    @DeleteMapping("/delete/{id}")
     public ResponseEntity<String> deleteStrength(@PathVariable int id) {
         try {
             strengthserv.deleteStrength(id);
@@ -73,6 +68,33 @@ public class StrengthController {
                     .body("Failed to delete strength: " + e.getMessage());
         }
     }
+
+
+    // added
+    @GetMapping("/deleted/{departmentId}")
+    public ResponseEntity<?> getDeletedStrengths(@PathVariable int departmentId) {
+        try {
+            List<StrengthEntity> deletedStrengths = strengthserv.getDeletedStrengths(departmentId);
+            return ResponseEntity.ok(deletedStrengths);
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error: " + e.getMessage());
+        }
+    }
+
+    @PutMapping("/restore/{id}")
+    public ResponseEntity<?> restoreStrength(@PathVariable int id) {
+        try {
+            StrengthEntity restoredStrength = strengthserv.restoreStrength(id);
+            return ResponseEntity.ok(restoredStrength);
+        } catch (NoSuchElementException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Error: " + e.getMessage());
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error: " + e.getMessage());
+        }
+    }
+
+ 
+
 
 
 }

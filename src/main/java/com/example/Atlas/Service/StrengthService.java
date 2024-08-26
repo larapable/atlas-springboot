@@ -27,7 +27,8 @@ public class StrengthService {
     }
 
     public List<StrengthEntity> getStrengthsByDepartmentId(int departmentId) {
-        return strengthrepo.findByDepartmentId(departmentId);
+        return strengthrepo.findByDepartmentIdAndIsDeleteFalse(departmentId);
+
     }
 
     
@@ -44,14 +45,35 @@ public class StrengthService {
     }
 
     public String deleteStrength(int strengthId) {
-        String msg="";
-        if (strengthrepo.findById(strengthId) != null) {
-            strengthrepo.deleteById(strengthId);
-            msg = "Strength "+strengthId+" is succesfully deleted!";
-        } else 
-            msg = "Strength "+strengthId+" does not exist!";
-            return msg;
-    } 
+        Optional<StrengthEntity> optionalStrength = strengthrepo.findById(strengthId);
+        if (optionalStrength.isPresent()) {
+            StrengthEntity strength = optionalStrength.get();
+            strength.setDelete(true);
+            strengthrepo.save(strength);
+            return "Strength " + strengthId + " is successfully marked as deleted!";
+        } else {
+            return "Strength " + strengthId + " does not exist!";
+        }
+    }
+
+    // added
+    public List<StrengthEntity> getDeletedStrengths(int departmentId) {
+        return strengthrepo.findByDepartmentIdAndIsDeleteTrue(departmentId);
+    }
+
+    public StrengthEntity restoreStrength(int strengthId) {
+        Optional<StrengthEntity> optionalStrength = strengthrepo.findById(strengthId);
+        if (optionalStrength.isPresent()) {
+            StrengthEntity strength = optionalStrength.get();
+            strength.setDelete(false);
+            return strengthrepo.save(strength);
+        } else {
+            throw new NoSuchElementException("Strength not found with ID: " + strengthId);
+        }
+    }
+
+   
+
 
 
 }

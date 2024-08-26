@@ -19,6 +19,8 @@ public class WeaknessEntity {
 
     private String value;
 
+    private boolean isDelete = false;  // Add this line
+
     @ManyToOne()
     @JoinColumn(name = "department_id") // Specify the foreign key column
     private DepartmentEntity department;
@@ -40,6 +42,15 @@ public class WeaknessEntity {
 
     public void setValue(String value) {
         this.value = value;
+    }
+
+     // Add getter and setter for isDelete
+     public boolean isDelete() {
+        return isDelete;
+    }
+
+    public void setDelete(boolean isDelete) {
+        this.isDelete = isDelete;
     }
 
      // Getters and setters for department

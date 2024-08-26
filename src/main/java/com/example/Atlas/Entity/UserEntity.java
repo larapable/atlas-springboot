@@ -1,5 +1,7 @@
 package com.example.Atlas.Entity;
 
+import java.util.Date;
+
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -19,12 +21,24 @@ public class UserEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
+    
+    private String firstname;
+
+    private String lastname;
+
+    private String role;
 
     private String username;
 
     private String email;
 
     private String password;
+    
+    @Column(columnDefinition = "int DEFAULT '0'")
+    private int age;
+
+    private Date birthdate;
+
 
     @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "department_id") // Specify the foreign key column
@@ -41,6 +55,34 @@ public class UserEntity {
 
     public void setId(int id) {
         this.id = id;
+    }
+    
+     // Getters and setters for firstname
+     public String getFirstname() {
+        return firstname;
+    }
+
+    public void setFirstname(String firstname) {
+        this.firstname = firstname;
+    }
+
+      // Getters and setters for lastname
+      public String getLastname() {
+        return lastname;
+    }
+
+    public void setLastname(String lastname) {
+        this.lastname = lastname;
+    }
+    
+
+      // Getters and setters for lastname
+      public String getRole() {
+        return role;
+    }
+
+    public void setRole(String role) {
+        this.role = role;
     }
 
     // Getters and setters for username
@@ -69,7 +111,25 @@ public class UserEntity {
     public void setPassword(String password) {
         this.password = password;
     }
+    
+    // Getters and setters for age 
+    public int getAge() {
+        return age;
+    }
 
+    public void setAge(int age) {
+        this.age = age;
+    }
+
+    // Getters and setters for birthdate 
+    public Date getBirthdate() {
+        return birthdate;
+    }
+
+    public void setBirthdate(Date birthdate) {
+        this.birthdate = birthdate;
+    }
+    
     // Getters and setters for department
     public DepartmentEntity getDepartment() {
         return department;

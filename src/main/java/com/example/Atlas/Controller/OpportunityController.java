@@ -36,15 +36,12 @@ public class OpportunityController {
     public ResponseEntity<?> getOpportunityByDepartmentId(@PathVariable int departmentId) {
         try {
             List<OpportunityEntity> opportunity = opportunityserv.getOpportunityByDepartmentId(departmentId);
-            if (opportunity != null && !opportunity.isEmpty()) {
-                return ResponseEntity.ok(opportunity);
-            } else {
-                return ResponseEntity.status(HttpStatus.NOT_FOUND).body("No opportunity found for department id " + departmentId);
-            }
+            return ResponseEntity.ok(opportunity);
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error: " + e.getMessage());
         }
     }
+    
 
     @PutMapping("/update/{departmentId}")
     public ResponseEntity<?> updateOpportunityById(@PathVariable int departmentId, @RequestBody OpportunityEntity request) {
@@ -71,6 +68,30 @@ public class OpportunityController {
                     .body("Failed to delete opportunity: " + e.getMessage());
         }
     }
+
+    // added
+    @GetMapping("/deleted/{departmentId}")
+    public ResponseEntity<?> getDeletedOpportunites(@PathVariable int departmentId) {
+        try {
+            List<OpportunityEntity> deletedOpportunity = opportunityserv.getDeletedOpportunities(departmentId);
+            return ResponseEntity.ok(deletedOpportunity);
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error: " + e.getMessage());
+        }
+    }
+
+    @PutMapping("/restore/{id}")
+    public ResponseEntity<?> restoreOpportunity(@PathVariable int id) {
+        try {
+            OpportunityEntity restoredOpportunity = opportunityserv.restoreOpportunity(id);
+            return ResponseEntity.ok(restoredOpportunity);
+        } catch (NoSuchElementException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Error: " + e.getMessage());
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error: " + e.getMessage());
+        }
+    }
+
 
 
     

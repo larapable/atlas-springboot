@@ -23,7 +23,7 @@ import com.example.Atlas.Service.DepartmentService;
 
 @RestController
 @RequestMapping("/department")
-@CrossOrigin
+@CrossOrigin // Allow requests from this origin
 public class DepartmentController {
     @Autowired
     DepartmentService departserv;
@@ -61,6 +61,7 @@ public class DepartmentController {
                     request.getHead_officer(),
                     request.getDepartment_landline(),
                     request.getLocation(),
+                    request.getEmail(),
                     request.getUniversity(),
                     request.getDescription()
                    

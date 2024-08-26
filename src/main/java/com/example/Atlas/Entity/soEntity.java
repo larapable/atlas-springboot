@@ -17,8 +17,8 @@ public class soEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
     
-    @Column(name = "s_oResponses")
-    private String s_oResponses;
+    @Column(name = "responses")
+    private String responses;
 
     @ManyToOne()
     @JoinColumn(name = "department_id") // Specify the foreign key column
@@ -36,11 +36,11 @@ public class soEntity {
 
     
     public String getS_oResponses() {
-        return s_oResponses;
+        return responses;
     }
 
-    public void setS_oResponses(String s_oResponses) {
-        this.s_oResponses = s_oResponses;
+    public void setS_oResponses(String responses) {
+        this.responses = responses;
     }
 
      // Getters and setters for department

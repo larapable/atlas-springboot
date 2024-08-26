@@ -1,6 +1,5 @@
 package com.example.Atlas.Entity;
 
-
 import java.time.LocalDate;
 
 import javax.persistence.Entity;
@@ -17,13 +16,13 @@ public class LearningEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
-    
+
     private String target_code;
 
     private String office_target;
 
     private LocalDate startDate;
-    
+
     private LocalDate completionDate;
 
     private String status;
@@ -34,11 +33,21 @@ public class LearningEntity {
 
     private Float actual_performance;
 
+    private String semester;
+
+    private String actions;
+
+    private Float budget;
+
+    private String incharge;
+
+    private String ofi;
+    
     @ManyToOne()
-    @JoinColumn(name = "department_id") 
+    @JoinColumn(name = "department_id")
     private DepartmentEntity department;
 
-    //Getters and setters
+    // Getters and setters
     public int getId() {
         return id;
     }
@@ -77,7 +86,7 @@ public class LearningEntity {
 
     public void setCompletionDate(LocalDate completionDate) {
         this.completionDate = completionDate;
-    
+
     }
 
     public String getStatus() {
@@ -92,7 +101,7 @@ public class LearningEntity {
         return key_performance_indicator;
     }
 
-    public void setKey_performance_indicator (String key_performance_indicator) {
+    public void setKey_performance_indicator(String key_performance_indicator) {
         this.key_performance_indicator = key_performance_indicator;
     }
 
@@ -112,7 +121,7 @@ public class LearningEntity {
         this.actual_performance = actual_performance;
     }
 
-        // Getters and setters for department
+    // Getters and setters for department
     public DepartmentEntity getDepartment() {
         return department;
     }
@@ -121,5 +130,43 @@ public class LearningEntity {
         this.department = department;
     }
 
-    
+    public String getSemester() {
+        return semester;
+    }
+
+    public void setSemester(String semester) {
+        this.semester = semester;
+    }
+
+    public String getActions() {
+        return actions;
+    }
+
+    public void setActions(String actions) {
+        this.actions = actions;
+    }
+
+    public Float getBudget() {
+        return budget;
+    }
+
+    public void setBudget(Float budget) {
+        this.budget = budget;
+    }
+
+    public String getIncharge() {
+        return incharge;
+    }
+
+    public void setIncharge(String incharge) {
+        this.incharge = incharge;
+    }
+
+    public String getOfi() {
+        return ofi;
+    }
+
+    public void setOfi(String ofi) {
+        this.ofi = ofi;
+    }
 }

@@ -7,8 +7,10 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import com.example.Atlas.Entity.OpportunityEntity;
 
 
+
 public interface OpportunityRepository extends JpaRepository<OpportunityEntity, Integer> {
 
-     List<OpportunityEntity> findByDepartmentId(int departmentId);
+     List<OpportunityEntity> findByDepartmentIdAndIsDeleteFalse(int departmentId);
+     List<OpportunityEntity> findByDepartmentIdAndIsDeleteTrue(int departmentId);
 }
 

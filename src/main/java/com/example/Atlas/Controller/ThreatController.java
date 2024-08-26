@@ -37,11 +37,7 @@ public class ThreatController {
     public ResponseEntity<?> getThreatsByDepartmentId(@PathVariable int departmentId) {
         try {
             List<ThreatEntity> threats = threatserv.getThreatsByDepartmentId(departmentId);
-            if (threats != null && !threats.isEmpty()) {
                 return ResponseEntity.ok(threats);
-            } else {
-                return ResponseEntity.status(HttpStatus.NOT_FOUND).body("No threats found for department id " + departmentId);
-            }
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error: " + e.getMessage());
         }
@@ -70,6 +66,29 @@ public class ThreatController {
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
                     .body("Failed to delete threat: " + e.getMessage());
+        }
+    }
+
+    // added
+    @GetMapping("/deleted/{departmentId}")
+    public ResponseEntity<?> getDeletedThreats(@PathVariable int departmentId) {
+        try {
+            List<ThreatEntity> deletedThreats = threatserv.getDeletedThreats(departmentId);
+            return ResponseEntity.ok(deletedThreats);
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error: " + e.getMessage());
+        }
+    }
+
+    @PutMapping("/restore/{id}")
+    public ResponseEntity<?> restorethreat(@PathVariable int id) {
+        try {
+            ThreatEntity restoredThreat = threatserv.restoreThreat(id);
+            return ResponseEntity.ok(restoredThreat);
+        } catch (NoSuchElementException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Error: " + e.getMessage());
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error: " + e.getMessage());
         }
     }
 }

@@ -1,8 +1,5 @@
 package com.example.Atlas.Entity;
 
-
-import java.time.LocalDate;
-
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -12,7 +9,6 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
-
 @Entity
 @Table(name = "goal")
 public class GoalEntity {
@@ -20,10 +16,12 @@ public class GoalEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
-    
+
     private String vision;
 
     private String proposition;
+
+    private String mission;
 
     private String goals;
 
@@ -31,15 +29,15 @@ public class GoalEntity {
 
     private String goals3;
 
-    private LocalDate startDate;
+    private int targetYear;
 
-    private LocalDate endDate;
+    private boolean accomplished;
 
     @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "department_id") // Specify the foreign key column
     private DepartmentEntity department;
 
-    //Getters and setters
+    // Getters and setters
     public int getId() {
         return id;
     }
@@ -55,13 +53,29 @@ public class GoalEntity {
     public void setVision(String vision) {
         this.vision = vision;
     }
-    
+
     public String getProposition() {
         return proposition;
     }
 
+    public void setMission(String mission) {
+        this.mission = mission;
+    }
+
+    public String getMission() {
+        return mission;
+    }
+
     public void setProposition(String proposition) {
         this.proposition = proposition;
+    }
+
+    public boolean isAccomplished() {
+        return accomplished;
+    }
+
+    public void setAccomplished(boolean accomplished) {
+        this.accomplished = accomplished;
     }
 
     public String getGoals() {
@@ -88,30 +102,19 @@ public class GoalEntity {
         this.goals3 = goals3;
     }
 
-    public LocalDate getStartDate() {
-        return startDate;
+    public int getTargetYear() {
+        return targetYear;
     }
 
-    public void setStartDate(LocalDate startDate) {
-        this.startDate = startDate;
+    public void setTargetYear(int targetYear) {
+        this.targetYear = targetYear;
     }
 
-    public LocalDate getEndDate() {
-        return endDate;
+    public DepartmentEntity getDepartment() {
+        return department;
     }
 
-    public void setEndDate(LocalDate endDate) {
-        this.endDate = endDate;
-    
+    public void setDepartment(DepartmentEntity department) {
+        this.department = department;
     }
-// Getters and setters for department
-public DepartmentEntity getDepartment() {
-    return department;
-}
-
-public void setDepartment(DepartmentEntity department) {
-    this.department = department;
-}
-     
-    
 }

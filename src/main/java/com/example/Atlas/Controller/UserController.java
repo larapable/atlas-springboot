@@ -9,16 +9,18 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-
-import java.util.Map;
 import java.util.HashMap;
+import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+
 import com.example.Atlas.Entity.UserEntity;
 import com.example.Atlas.Service.UserService;
 
 @RestController
 @RequestMapping("/user")
-@CrossOrigin
+@CrossOrigin(origins = "http://localhost:8080", allowCredentials = "true")
 public class UserController {
     @Autowired
     UserService userserv;
@@ -28,14 +30,32 @@ public class UserController {
         String email = request.get("email");
         String username = request.get("username");
 
-        boolean userExists = userserv.checkUserExists(email, username);
+        boolean emailExists = userserv.checkEmailExists(email);
         boolean userNameExists = userserv.checkUserNameExists(username);
 
         Map<String, Boolean> response = new HashMap<>();
-        response.put("user", userExists);
+        response.put("userEmail", emailExists);
         response.put("userName", userNameExists);
 
         return response;
+    }
+
+    @PostMapping("/login")
+    public ResponseEntity<?> getUser(@RequestBody Map<String, String> request) {
+        String username = request.get("username");
+        String password = request.get("password");
+
+        UserEntity user = userserv.getUserByUsername(username);
+        if (user == null) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("User not found");
+        }
+
+        boolean passwordMatch = userserv.checkPassword(password, user.getPassword());
+        if (!passwordMatch) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Invalid password");
+        }
+
+        return ResponseEntity.ok(user);
     }
 
     @PostMapping("/insert")
@@ -43,16 +63,48 @@ public class UserController {
         return userserv.insertUser(user);
     }
 
+    
+    @GetMapping("/{userId}")
+    public UserEntity getProfileData(@PathVariable int userId) {
+        return userserv.getUserById(userId);
+    }
+
     @GetMapping("get/{username}")
     public UserEntity getUser(@PathVariable String username) {
         return userserv.getUserByUsername(username);
     }
-
+    
   
     @PutMapping("/update/{username}")
     public String updateUser(@PathVariable String username) {
         return userserv.updateUserGeneratedAiStrats(username);
     }
+
+    @PutMapping("/update/profile/{user_id}")
+    public ResponseEntity<String> updateUserProfile(
+            @PathVariable("user_id") int user_id,
+            @RequestBody UserEntity request) {
+        try {
+            boolean success = userserv.updateUserDetails(
+                   user_id,
+                   request.getFirstname(),
+                   request.getLastname(),
+                   request.getRole(),
+                   request.getEmail(),
+                   request.getAge(),
+                   request.getBirthdate()
+                   
+            );
+            if (success) {
+                return ResponseEntity.ok("User profile updated successfully.");
+            } else {
+                return ResponseEntity.status(HttpStatus.NOT_FOUND).body("User not found with ID: " + user_id);
+            }
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Failed to update user profile: " + e.getMessage());
+        }
+    }
+
   
     
    
