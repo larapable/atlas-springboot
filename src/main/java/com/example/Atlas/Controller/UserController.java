@@ -9,8 +9,15 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+<<<<<<< HEAD
 import java.util.HashMap;
 import java.util.Map;
+=======
+import java.util.Map;
+import java.util.HashMap;
+import java.util.List;
+
+>>>>>>> d97fcbf946986816f2fcdf25dd548a4c82270917
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -73,13 +80,18 @@ public class UserController {
     public UserEntity getUser(@PathVariable String username) {
         return userserv.getUserByUsername(username);
     }
+<<<<<<< HEAD
     
   
+=======
+
+>>>>>>> d97fcbf946986816f2fcdf25dd548a4c82270917
     @PutMapping("/update/{username}")
     public String updateUser(@PathVariable String username) {
         return userserv.updateUserGeneratedAiStrats(username);
     }
 
+<<<<<<< HEAD
     @PutMapping("/update/profile/{user_id}")
     public ResponseEntity<String> updateUserProfile(
             @PathVariable("user_id") int user_id,
@@ -108,4 +120,18 @@ public class UserController {
   
     
    
+=======
+    @GetMapping("/userCount")
+    public Map<String, Integer> getUserCount() {
+        Map<String, Integer> response = new HashMap<>();
+        Integer userCount = userserv.getUserCount();
+        response.put("userCount", userCount);
+        return response;
+    }
+
+    @GetMapping("/getAllUsers")
+    public List<UserEntity> getAllUsers() {
+        return userserv.getAllUsers();
+    }
+>>>>>>> d97fcbf946986816f2fcdf25dd548a4c82270917
 }

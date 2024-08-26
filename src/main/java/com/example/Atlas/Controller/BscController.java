@@ -26,7 +26,11 @@ import com.example.Atlas.Service.BscService;
 
 @RestController
 @RequestMapping("/bsc")
+<<<<<<< HEAD
 @CrossOrigin(origins = "http://localhost:3000")
+=======
+@CrossOrigin("http://localhost:3000")
+>>>>>>> d97fcbf946986816f2fcdf25dd548a4c82270917
 public class BscController {
     @Autowired
     BscService bscserv;
@@ -66,6 +70,23 @@ public class BscController {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
         }
     }
+<<<<<<< HEAD
+=======
+    // public ResponseEntity<FinancialEntity> updateFinancialBsc(@PathVariable int
+    // id, @RequestBody FinancialEntity request) {
+    // try {
+    // request.setId(id); // Ensure the ID from the path variable is set in the
+    // request entity
+    // FinancialEntity updatedFinancial = bscserv.updateFinancialBscById(id,
+    // request);
+    // return ResponseEntity.ok(updatedFinancial);
+    // } catch (NoSuchElementException e) {
+    // return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
+    // } catch (Exception e) {
+    // return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
+    // }
+    // }
+>>>>>>> d97fcbf946986816f2fcdf25dd548a4c82270917
 
     // Stakeholder
     @PostMapping("/stakeholderBsc/insert")

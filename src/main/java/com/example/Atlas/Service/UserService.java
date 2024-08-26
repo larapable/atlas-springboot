@@ -1,6 +1,6 @@
 package com.example.Atlas.Service;
 
-
+import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Optional;
 import java.util.Date;
@@ -25,10 +25,9 @@ public class UserService {
      @Autowired
     private PasswordEncoder passwordEncoder;
 
-   
-    
     public UserEntity insertUser(UserEntity request) {
-        DepartmentEntity department = departmentrepo.findById(request.getDepartment().getId()).orElseThrow(() -> new NoSuchElementException("User not found"));
+        DepartmentEntity department = departmentrepo.findById(request.getDepartment().getId())
+                .orElseThrow(() -> new NoSuchElementException("User not found"));
         request.setDepartment(department);
         request.setPassword(passwordEncoder.encode(request.getPassword()));
         return userrepo.save(request);
@@ -46,7 +45,7 @@ public class UserService {
     public boolean checkUserNameExists(String username) {
         return userrepo.existsByUsername(username);
     }
-    
+
     public UserEntity getUserByUsername(String username) {
         return userrepo.findByUsername(username);
     }
@@ -107,6 +106,11 @@ public class UserService {
         return "User already has generatedAiStrats set";
     }
 
-   
- 
+    public int getUserCount() {
+        return (int) userrepo.count();
+    }
+
+    public List<UserEntity> getAllUsers() {
+        return userrepo.findAll();
+    }
 }
