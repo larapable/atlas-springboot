@@ -148,7 +148,6 @@ public class BscService {
         Optional<LearningEntity> optionalLearning = learningrepo.findById(request.getId());
         if (optionalLearning.isPresent()) {
             LearningEntity existingStakeholder = optionalLearning.get();
-<<<<<<< HEAD
             if (request.getTarget_code() != null)
                 existingStakeholder.setTarget_code(request.getTarget_code());
             if (request.getOffice_target() != null)
@@ -175,18 +174,6 @@ public class BscService {
                 existingStakeholder.setIncharge(request.getIncharge());
             if (request.getOfi() != null)
                 existingStakeholder.setOfi(request.getOfi());
-=======
-            existingStakeholder.setTarget_code(request.getTarget_code());
-            existingStakeholder.setOffice_target(request.getOffice_target());
-            existingStakeholder.setStartDate(request.getStartDate());
-            existingStakeholder.setCompletionDate(request.getCompletionDate());
-            existingStakeholder.setStatus(request.getStatus());
-            existingStakeholder.setKey_performance_indicator(request.getKey_performance_indicator());
-            existingStakeholder.setTarget_performance(request.getTarget_performance());
-            existingStakeholder.setActual_performance(request.getActual_performance());
-            // Assuming Department is an entity, handle it accordingly
-            // existingFinancial.setDepartment(request.getDepartment());
->>>>>>> d97fcbf946986816f2fcdf25dd548a4c82270917
             return learningrepo.save(existingStakeholder);
         } else {
             throw new NoSuchElementException("Learning scorecard not found with ID: " + request.getId());
@@ -209,7 +196,6 @@ public class BscService {
         Optional<InternalEntity> optionInternal = internalrepo.findById(request.getId());
         if (optionInternal.isPresent()) {
             InternalEntity existingStakeholder = optionInternal.get();
-<<<<<<< HEAD
             if (request.getTarget_code() != null)
                 existingStakeholder.setTarget_code(request.getTarget_code());
             if (request.getOffice_target() != null)
@@ -236,18 +222,6 @@ public class BscService {
                 existingStakeholder.setIncharge(request.getIncharge());
             if (request.getOfi() != null)
                 existingStakeholder.setOfi(request.getOfi());
-=======
-            existingStakeholder.setTarget_code(request.getTarget_code());
-            existingStakeholder.setOffice_target(request.getOffice_target());
-            existingStakeholder.setStartDate(request.getStartDate());
-            existingStakeholder.setCompletionDate(request.getCompletionDate());
-            existingStakeholder.setStatus(request.getStatus());
-            existingStakeholder.setKey_performance_indicator(request.getKey_performance_indicator());
-            existingStakeholder.setTarget_performance(request.getTarget_performance());
-            existingStakeholder.setActual_performance(request.getActual_performance());
-            // Assuming Department is an entity, handle it accordingly
-            // existingFinancial.setDepartment(request.getDepartment());
->>>>>>> d97fcbf946986816f2fcdf25dd548a4c82270917
             return internalrepo.save(existingStakeholder);
         } else {
             throw new NoSuchElementException("Internal scorecard not found with ID: " + request.getId());
